@@ -1,0 +1,70 @@
+{
+  "packet": "xylophone",
+  "version": "v1",
+  "scope": {
+    "in_scope": [
+      "FRAME-RAIL milling and dado for cord-stop pin",
+      "FRAME-LEG mortising for rail tenons",
+      "FRAME-GUSSET cutting from 1/2 inch Baltic birch plywood"
+    ],
+    "out_of_scope": [
+      "Bar blanks — bandsaw + plane + manual end-shave for tuning",
+      "Mallets — purchased, not built",
+      "Resonator tubes — deferred to v2 build"
+    ]
+  },
+  "machine": "Maker Nexus ShopBot 96x60 CNC router",
+  "datum_strategy": "Lower-left corner of stock; Z zero on top of stock surface; uniform across all three operation groups",
+  "tooling": [
+    {"id": "T01", "type": "1/4 in 2-flute upcut compression", "use": "rail outlines and gusset perimeter"},
+    {"id": "T02", "type": "1/8 in 2-flute upcut", "use": "rail dado for cord-stop pin"},
+    {"id": "T03", "type": "1/2 in 2-flute upcut", "use": "leg mortise pockets"}
+  ],
+  "workholding": "Vacuum table for plywood gussets; toggle clamps and L-fences for hard-maple rails and legs",
+  "release_checks": [
+    "Verify stock thickness with calipers at 4 corners before any Z-axis move",
+    "Dry-run program at Z+0.5 in before first cut on each new operation group",
+    "Confirm bit length and stickout on T01 toolpath; the rail thickness is 1.250 in",
+    "After first part of each batch: pause, measure critical dimensions, accept or revise feeds",
+    "Vacuum hold-down: confirm seal before plywood operations; expect to lose seal on through-cuts"
+  ],
+  "operation_groups": [
+    {
+      "id": "OP1-rails",
+      "tool": "T01",
+      "operation": "outline both rails to 21.0 x 2.25 x 1.25 in",
+      "passes": 4,
+      "feed_in_per_min": 90,
+      "rpm": 16000
+    },
+    {
+      "id": "OP2-rail-dado",
+      "tool": "T02",
+      "operation": "0.125 in dado along the inside top edge of each rail at 0.250 in depth for cord-stop seating",
+      "feed_in_per_min": 60,
+      "rpm": 18000
+    },
+    {
+      "id": "OP3-legs",
+      "tool": "T03",
+      "operation": "two 1.0 x 0.5 x 0.5 in mortises in the top face of each leg, spaced to receive the gusset",
+      "feed_in_per_min": 50,
+      "rpm": 14000
+    },
+    {
+      "id": "OP4-gussets",
+      "tool": "T01",
+      "operation": "cut 4 gussets at 6.0 x 6.0 x 0.5 in, 45-degree triangle, hypotenuse outboard",
+      "passes": 2,
+      "feed_in_per_min": 110,
+      "rpm": 16000
+    }
+  ],
+  "pre_cam_assumptions": [
+    "Stock thickness arrives within +/- 1/64 in of nominal",
+    "Hard maple is straight-grained and free of knots in the cutter path",
+    "Plywood is B/BB or better; no voids in the cutter path",
+    "Vacuum table is functional and can hold a 12x12 plywood blank"
+  ],
+  "post_cnc_handoff": "All four operation groups produce raw-cut parts; sand to 220 grit and break edges 1/16 in before frame glue-up (assembly-manual.md Step 8 onwards)"
+}

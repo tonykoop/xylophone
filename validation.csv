@@ -1,0 +1,9 @@
+row_id,note_id,phase,target_hz,measured_hz,cents_target,cents_actual,tuner_make_model,temp_F,humidity_RH_percent,environment_notes,date,result
+V1,ALL,prediction-paper,per family-spec,,0,,N/A,68,45,"design table, pre-cut",,"first-order Euler-Bernoulli prediction; logged from family-spec.csv"
+V2,A5,post-cut,880.00,,0,,Korg OT-120,68,45,"shop bench, immediately after surface plane",,"first measurement; expected to read low if length over rough"
+V3,A5,post-shave,880.00,,0,,Korg OT-120,68,45,"shop bench, after end-shaving for fundamental",,"shave 1/64 in increments; recheck"
+V4,A5,post-finish,880.00,,-3 to 0,,Korg OT-120,68,45,"shop bench, 24 hours after final tung-oil coat",,"finish adds mass; expected drift -2 to -4 cents"
+V5,A5,post-resonator-install,880.00,,0,,Korg OT-120,68,45,"shop, with resonator tube installed at quarter-wave length",,"deferred to v2 build"
+V6,ALL,30-day-moisture,per family-spec,,within +/-5,,Korg OT-120,TBD,TBD,"30 days post-finish; log temp and RH",,"retune any bar drifting beyond +/-5 cents"
+V7,ALL,60-day-moisture,per family-spec,,within +/-5,,Korg OT-120,TBD,TBD,"60 days post-finish; log temp and RH",,"second moisture check; if stable retire moisture rows"
+V8,C5-C6-C7,full-octave-evenness,"523.25, 1046.50, 2093.00",,within +/-5 across the three Cs,,Korg OT-120,68,45,"all three Cs measured in one session for evenness",,"if greater than 10 cents spread, escalate to design review"

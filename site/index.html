@@ -1,0 +1,231 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Xylophone — Design — Tony Koop's Build Log</title>
+<link rel="stylesheet" href="assets/style.css">
+</head>
+<body>
+<header class="hero"><div class="hero-img" style="background:linear-gradient(135deg,#5c3517,#a0522d);height:360px;"></div><div class="hero-text"><h1>Xylophone — Design</h1><p>A 25-bar chromatic xylophone, C5 to C7, in Padauk on a parametric trestle frame.
+Free-free flat-bar geometry, 12th-overtone tuning convention, optional
+quarter-wave closed-pipe resonators (deferred). Designed deliberately as the
+*simpler* sibling of a future marimba sister repo: every place this design
+chooses the simpler path, the marimba-equivalent is documented inline so the
+marimba scaffold inherits cleanly.</p></div></header>
+<main>
+<section><h2>What this is</h2><p class="placeholder">(section missing in design.md)</p></section>
+<section><h2>The design</h2><p>Free-free Euler-Bernoulli transverse beam vibration, first mode:</p>
+<p>f_1 = 1.028 × (h / L²) × √(E / ρ)</p>
+<p>Symbols and units (SI):</p>
+<ul><li>`h` — bar thickness (m)</li><li>`L` — bar length (m)</li><li>`E` — Young&#x27;s modulus along grain (Pa)</li><li>`ρ` — density (kg/m³)</li><li>`f_1` — first-mode frequency (Hz)</li></ul>
+<p>Reference: `acoustic-models.md` Free-Free Beams section. The formula
+follows from `K_free_free ≈ 6.36 × K_cantilever` applied to the
+cantilever form `f_1 ≈ 0.162 × (h/L²) × √(E/ρ)`. Suspension nodes for
+the first free-free mode are at **22.4% and 77.6% of L** — every
+cord-hole in `family-spec.csv` is placed there.</p>
+<p>**First-order estimate caveat.** Per the `acoustic-models.md`
+empirical-correction guard rules, K2 corrections, scale-offset tables,
+and end-corrections **do not apply** to bar idiophones. Material
+K-constants from the cantilever wood table are species-specific and
+only valid for the free-free / fixed-free regime — they propagate to
+this packet via the 6.36× factor above. Every predicted frequency in
+`family-spec.csv` is flagged as *first-order*; `validation.csv` is the
+mechanism that closes the gap with measured data after first prototype.</p>
+<p>**Xylophone tuning convention.** Bars are tuned to align the *12th
+overtone* (3:1 frequency ratio above the fundamental — actually the
+second flexural mode tuned to a perfect 12th of the fundamental in the
+concert convention; first-order math reports `f_1` only). Marimba
+tunes the second mode to a 4:1 ratio (two octaves) by parabolic arch
+undercut. **This packet uses no arch undercut** — bars are flat-bottom
+rectangular blanks, end-shaved for fundamental tuning. The
+12th-overtone target is documented as a *measurement target* in
+`validation.csv`, not a CAD geometry — adjust at the bench.</p>
+<p>&gt; Marimba-equivalent: replace the flat-bottom geometry with a parabolic
+&gt; CNC arch on the underside (`acoustic-models.md`:
+&gt; `center_thickness = edge_thickness × (target_freq / flat_bar_freq)²`,
+&gt; minimum center 0.25&quot;). Replace the 12th-overtone target with the
+&gt; 4:1 octave-and-a-fifth target. Replace the optional resonators with
+&gt; mandatory tuned tubes.</p><figure><object data="assets/drawings/template.svg" type="image/svg+xml" class="drawing"></object><figcaption>template</figcaption></figure></section>
+<section><h2>The build</h2><h2>Xylophone — Assembly Manual</h2>
+<p>14 shop steps, in order. Checkboxes are blank for shop use; tick them
+off as you go. Estimated total bench time: **3 working days** with
+overnight glue cures.</p>
+<h3>Materials and tools required</h3>
+<p>Read `bom.csv` and `sourcing.csv` end-to-end before starting. The
+critical-path items: Padauk bar stock at 6–8% MC, Korg OT-120 tuner,
+1/8&quot; brad-point bit, Titebond III, tung oil, and the two jigs from
+`jig-decision.md` (node-hole drilling jig, end-shaving sled).</p>
+<h3>Step 1 — Verify moisture content</h3>
+<ul><li>[ ] Pin-meter the Padauk bar stock at three points along each</li><li>[ ] Log temp + RH in the shop in `validation.csv` row V1.</li><li>[ ] If MC &gt; 8%: stack with stickers in the shop for two weeks and</li></ul>
+<h3>Step 2 — Mill blanks to rough cut-list dimensions</h3>
+<ul><li>[ ] Cross-cut each bar blank to its `rough_dimensions_in[0]` length</li><li>[ ] Rip to 1.625&quot; rough width.</li><li>[ ] Joint one face and one edge.</li><li>[ ] Plane to 1.0&quot; rough thickness.</li></ul>
+<h3>Step 3 — Final mill bars</h3>
+<ul><li>[ ] Plane to **0.875&quot;** final thickness.</li><li>[ ] Rip to **1.500&quot;** final width.</li><li>[ ] Cross-cut to the `final_dimensions_in[0]` length per</li></ul>
+<h3>Step 4 — Surface prep</h3>
+<ul><li>[ ] Drum-sand or hand-sand each bar 80 → 120 → 180 → 220.</li><li>[ ] Ease all four long edges with a 1/16&quot; round-over.</li><li>[ ] Mark each bar&#x27;s note name on the underside in pencil.</li></ul>
+<h3>Step 5 — Drill node holes (jig)</h3>
+<ul><li>[ ] Set up the node-hole drilling jig from `jig-decision.md`.</li><li>[ ] For each bar: set both flip-stops to the bar&#x27;s</li><li>[ ] Drill the low-side hole, flip stops, drill the high-side hole.</li><li>[ ] Chamfer both holes ~0.5mm with a countersink to prevent cord</li></ul>
+<h3>Step 6 — First measurement</h3>
+<ul><li>[ ] Suspend each bar from a piece of test-cord through both node</li><li>[ ] Strike with the hard rubber mallet, measure with the Korg</li><li>[ ] Log result for each bar in `validation.csv` row V2.</li><li>[ ] **Expected outcome:** bars read 5–25 cents *low* of target.</li></ul>
+<h3>Step 7 — Tune by end-shaving</h3>
+<ul><li>[ ] On the end-shaving sled: shave equal amounts from each bar end</li><li>[ ] After each pass, re-suspend, re-strike, re-measure. Stop when</li><li>[ ] Log result in `validation.csv` row V3.</li><li>[ ] If a bar overshoots (reads sharp): **do not add material**.</li></ul>
+<h3>Step 8 — Mill frame parts</h3>
+<ul><li>[ ] Mill the two suspension rails to `21.000 × 2.250 × 1.250&quot;`.</li><li>[ ] Mill four legs to `30.000 × 1.500 × 1.500&quot;`. Chamfer the top</li><li>[ ] Cut four corner gussets from 1/2&quot; Baltic birch plywood at</li></ul>
+<h3>Step 9 — Frame dry-fit</h3>
+<ul><li>[ ] Dry-assemble the frame: legs into rails via the gussets.</li><li>[ ] Verify rail-to-rail spacing is 6.5&quot; inside-to-inside (matches</li><li>[ ] Verify legs are square to rails.</li></ul>
+<h3>Step 10 — Frame glue-up</h3>
+<ul><li>[ ] Apply Titebond III to all gusset-to-frame joints.</li><li>[ ] Drive #10 × 2&quot; wood screws through pilot holes (Padauk and</li><li>[ ] Clamp 24 hours. Do not flex the frame during cure.</li></ul>
+<h3>Step 11 — Apply finish</h3>
+<ul><li>[ ] Wipe each bar with mineral spirits to remove sanding dust.</li><li>[ ] Apply pure tung oil with a lint-free rag, three coats. Each</li><li>[ ] Apply finish to the frame the same way (two coats is enough).</li><li>[ ] **24 hours after the last bar coat:** re-measure each bar.</li></ul>
+<h3>Step 12 — Top-coat and cure</h3>
+<ul><li>[ ] Apply beeswax paste over the cured tung oil; buff out.</li><li>[ ] Allow seven days at shop ambient before play-testing.</li></ul>
+<h3>Step 13 — Suspend bars</h3>
+<ul><li>[ ] Cut paracord to length: rail length × 2 + 12&quot; tail per rail.</li><li>[ ] Tie a stopper knot at each rail end.</li><li>[ ] Thread cord through node holes in C5–C7 order, alternating</li><li>[ ] Terminate at the second rail with brass finish washers and a</li></ul>
+<h3>Step 14 — Final validation</h3>
+<ul><li>[ ] Photograph the finished assembly per `photo-shotlist.md`</li><li>[ ] Run validation row V8 (full-octave evenness): measure C5, C6,</li><li>[ ] Schedule validation rows V6 (30-day) and V7 (60-day) on the</li><li>[ ] Mark this packet as `built` in the master catalog.</li></ul><p class="placeholder">No process photos in <code>images/</code>. Add at least one to populate this section.</p></section>
+<section><h2>The numbers</h2><h3>BOM</h3><table><thead><tr><th>part_id</th><th>part_name</th><th>qty</th><th>unit</th><th>estimated_cost</th><th>supplier_candidate</th><th>notes</th></tr></thead><tbody><tr><td>BAR-STOCK</td><td>Padauk 4/4 quartersawn, surfaced 4 sides, KD 6-8% MC</td><td class="num">1</td><td>board-foot-bundle-25</td><td class="num">180.00</td><td>Bell Forest Products</td><td>sized to yield 25 bars 8.3-16.7in long x 1.5in x 7/8in plus 20% waste</td></tr>
+<tr><td>FRAME-RAIL</td><td>Hard maple 8/4 rail blank 24in x 2.5in x 1.5in</td><td class="num">2</td><td>piece</td><td class="num">28.00</td><td>Bell Forest Products</td><td>two suspension rails; rough oversize</td></tr>
+<tr><td>FRAME-LEG</td><td>Hard maple 8/4 leg blank 32in x 1.75in x 1.75in</td><td class="num">4</td><td>piece</td><td class="num">18.00</td><td>Bell Forest Products</td><td>four legs; rough oversize</td></tr>
+<tr><td>FRAME-GUSSET</td><td>Baltic birch ply 1/2in 12x12 panel</td><td class="num">1</td><td>piece</td><td class="num">14.00</td><td>Lee Valley</td><td>two corner gussets per end</td></tr>
+<tr><td>CORD-NODE</td><td>1/8 inch paracord black 100ft hank</td><td class="num">1</td><td>hank</td><td class="num">9.00</td><td>Lee Valley</td><td>node-suspension cord</td></tr>
+<tr><td>CORD-WASHER</td><td>Brass finish washer 1/8in cord 25-pack</td><td class="num">1</td><td>pack</td><td class="num">8.00</td><td>Lee Valley</td><td>cord termination</td></tr>
+<tr><td>SCREW-FRAME</td><td>#10 x 2in zinc wood screw 50-pack</td><td class="num">1</td><td>pack</td><td class="num">7.00</td><td>Lee Valley</td><td>frame assembly</td></tr>
+<tr><td>GLUE-FRAME</td><td>Titebond III 16oz</td><td class="num">1</td><td>bottle</td><td class="num">12.00</td><td>Lee Valley</td><td>frame joinery</td></tr>
+<tr><td>FINISH-OIL</td><td>Tung oil pure 16oz</td><td class="num">1</td><td>bottle</td><td class="num">18.00</td><td>Lee Valley</td><td>bar and frame finish</td></tr>
+<tr><td>FINISH-WAX</td><td>Beeswax paste 8oz</td><td class="num">1</td><td>tin</td><td class="num">11.00</td><td>Lee Valley</td><td>top coat</td></tr>
+<tr><td>MALLET-HRD</td><td>Hard rubber xylophone mallet pair</td><td class="num">2</td><td>pair</td><td class="num">32.00</td><td>Innovative Percussion</td><td>primary mallet for upper octave</td></tr>
+<tr><td>MALLET-MED</td><td>Yarn-wrapped medium mallet pair</td><td class="num">2</td><td>pair</td><td class="num">38.00</td><td>Innovative Percussion</td><td>alt mallet for low octave</td></tr>
+<tr><td>TUNER-CHROMA</td><td>Korg OT-120 orchestral tuner</td><td class="num">1</td><td>unit</td><td class="num">140.00</td><td>Sweetwater</td><td>validation row 2-8 device of record</td></tr>
+<tr><td>HYGRO-SHOP</td><td>Combo hygrometer-thermometer digital</td><td class="num">1</td><td>unit</td><td class="num">22.00</td><td>Lee Valley</td><td>validation env log</td></tr>
+<tr><td>MOIST-METER</td><td>Pin-style moisture meter</td><td class="num">1</td><td>unit</td><td class="num">38.00</td><td>Lee Valley</td><td>verify 6-8% MC at glue-up</td></tr>
+<tr><td>SANDPAPER-KIT</td><td>Aluminum oxide grit 80-220 assortment</td><td class="num">1</td><td>kit</td><td class="num">18.00</td><td>Lee Valley</td><td>bar surface prep</td></tr>
+<tr><td>DRILL-BIT-NODE</td><td>1/8in brad-point bit</td><td class="num">2</td><td>piece</td><td class="num">4.50</td><td>Lee Valley</td><td>node-hole drilling, jig-mounted</td></tr>
+<tr><td>RESONATOR-TUBE</td><td>Aluminum tube 1.5in OD 36in length</td><td class="num">2</td><td>piece</td><td>TBD</td><td>McMaster-Carr</td><td>deferred to v2 build; sized for resonator option</td></tr></tbody></table><h3>Cut list</h3><table><thead><tr><th>part_id</th><th>part_name</th><th>qty</th><th>rough_dimensions_in</th><th>final_dimensions_in</th><th>grain_orientation</th><th>notes</th></tr></thead><tbody><tr><td>BAR-C5</td><td>Bar C5</td><td class="num">1</td><td>18.0 x 1.625 x 1.0</td><td>16.683 x 1.500 x 0.875</td><td>longitudinal-quarter</td><td>longest bar; cut from longest blank</td></tr>
+<tr><td>BAR-Cs5</td><td>Bar C#5</td><td class="num">1</td><td>17.5 x 1.625 x 1.0</td><td>16.208 x 1.500 x 0.875</td><td>longitudinal-quarter</td><td></td></tr>
+<tr><td>BAR-D5</td><td>Bar D5</td><td class="num">1</td><td>17.0 x 1.625 x 1.0</td><td>15.747 x 1.500 x 0.875</td><td>longitudinal-quarter</td><td></td></tr>
+<tr><td>BAR-Ds5</td><td>Bar D#5</td><td class="num">1</td><td>16.5 x 1.625 x 1.0</td><td>15.299 x 1.500 x 0.875</td><td>longitudinal-quarter</td><td></td></tr>
+<tr><td>BAR-E5</td><td>Bar E5</td><td class="num">1</td><td>16.0 x 1.625 x 1.0</td><td>14.863 x 1.500 x 0.875</td><td>longitudinal-quarter</td><td></td></tr>
+<tr><td>BAR-F5</td><td>Bar F5</td><td class="num">1</td><td>15.5 x 1.625 x 1.0</td><td>14.440 x 1.500 x 0.875</td><td>longitudinal-quarter</td><td></td></tr>
+<tr><td>BAR-Fs5</td><td>Bar F#5</td><td class="num">1</td><td>15.0 x 1.625 x 1.0</td><td>14.029 x 1.500 x 0.875</td><td>longitudinal-quarter</td><td></td></tr>
+<tr><td>BAR-G5</td><td>Bar G5</td><td class="num">1</td><td>15.0 x 1.625 x 1.0</td><td>13.630 x 1.500 x 0.875</td><td>longitudinal-quarter</td><td></td></tr>
+<tr><td>BAR-Gs5</td><td>Bar G#5</td><td class="num">1</td><td>14.5 x 1.625 x 1.0</td><td>13.242 x 1.500 x 0.875</td><td>longitudinal-quarter</td><td></td></tr>
+<tr><td>BAR-A5</td><td>Bar A5</td><td class="num">1</td><td>14.0 x 1.625 x 1.0</td><td>12.865 x 1.500 x 0.875</td><td>longitudinal-quarter</td><td></td></tr>
+<tr><td>BAR-As5</td><td>Bar A#5</td><td class="num">1</td><td>13.5 x 1.625 x 1.0</td><td>12.498 x 1.500 x 0.875</td><td>longitudinal-quarter</td><td></td></tr>
+<tr><td>BAR-B5</td><td>Bar B5</td><td class="num">1</td><td>13.5 x 1.625 x 1.0</td><td>12.143 x 1.500 x 0.875</td><td>longitudinal-quarter</td><td></td></tr>
+<tr><td>BAR-C6</td><td>Bar C6</td><td class="num">1</td><td>13.0 x 1.625 x 1.0</td><td>11.797 x 1.500 x 0.875</td><td>longitudinal-quarter</td><td></td></tr>
+<tr><td>BAR-Cs6</td><td>Bar C#6</td><td class="num">1</td><td>12.5 x 1.625 x 1.0</td><td>11.461 x 1.500 x 0.875</td><td>longitudinal-quarter</td><td></td></tr>
+<tr><td>BAR-D6</td><td>Bar D6</td><td class="num">1</td><td>12.5 x 1.625 x 1.0</td><td>11.135 x 1.500 x 0.875</td><td>longitudinal-quarter</td><td></td></tr>
+<tr><td>BAR-Ds6</td><td>Bar D#6</td><td class="num">1</td><td>12.0 x 1.625 x 1.0</td><td>10.818 x 1.500 x 0.875</td><td>longitudinal-quarter</td><td></td></tr>
+<tr><td>BAR-E6</td><td>Bar E6</td><td class="num">1</td><td>11.5 x 1.625 x 1.0</td><td>10.510 x 1.500 x 0.875</td><td>longitudinal-quarter</td><td></td></tr>
+<tr><td>BAR-F6</td><td>Bar F6</td><td class="num">1</td><td>11.5 x 1.625 x 1.0</td><td>10.211 x 1.500 x 0.875</td><td>longitudinal-quarter</td><td></td></tr>
+<tr><td>BAR-Fs6</td><td>Bar F#6</td><td class="num">1</td><td>11.0 x 1.625 x 1.0</td><td>9.920 x 1.500 x 0.875</td><td>longitudinal-quarter</td><td></td></tr>
+<tr><td>BAR-G6</td><td>Bar G6</td><td class="num">1</td><td>10.5 x 1.625 x 1.0</td><td>9.638 x 1.500 x 0.875</td><td>longitudinal-quarter</td><td></td></tr>
+<tr><td>BAR-Gs6</td><td>Bar G#6</td><td class="num">1</td><td>10.5 x 1.625 x 1.0</td><td>9.363 x 1.500 x 0.875</td><td>longitudinal-quarter</td><td></td></tr>
+<tr><td>BAR-A6</td><td>Bar A6</td><td class="num">1</td><td>10.0 x 1.625 x 1.0</td><td>9.097 x 1.500 x 0.875</td><td>longitudinal-quarter</td><td></td></tr>
+<tr><td>BAR-As6</td><td>Bar A#6</td><td class="num">1</td><td>9.5 x 1.625 x 1.0</td><td>8.838 x 1.500 x 0.875</td><td>longitudinal-quarter</td><td></td></tr>
+<tr><td>BAR-B6</td><td>Bar B6</td><td class="num">1</td><td>9.5 x 1.625 x 1.0</td><td>8.586 x 1.500 x 0.875</td><td>longitudinal-quarter</td><td></td></tr>
+<tr><td>BAR-C7</td><td>Bar C7</td><td class="num">1</td><td>9.0 x 1.625 x 1.0</td><td>8.342 x 1.500 x 0.875</td><td>longitudinal-quarter</td><td></td></tr>
+<tr><td>RAIL-L</td><td>Suspension rail left</td><td class="num">1</td><td>22.0 x 2.5 x 1.5</td><td>21.000 x 2.250 x 1.250</td><td>longitudinal</td><td>both rails identical</td></tr>
+<tr><td>RAIL-R</td><td>Suspension rail right</td><td class="num">1</td><td>22.0 x 2.5 x 1.5</td><td>21.000 x 2.250 x 1.250</td><td>longitudinal</td><td></td></tr>
+<tr><td>LEG-FL</td><td>Front-left leg</td><td class="num">1</td><td>32.0 x 1.75 x 1.75</td><td>30.000 x 1.500 x 1.500</td><td>longitudinal</td><td>chamfer top edge for cord clearance</td></tr>
+<tr><td>LEG-FR</td><td>Front-right leg</td><td class="num">1</td><td>32.0 x 1.75 x 1.75</td><td>30.000 x 1.500 x 1.500</td><td>longitudinal</td><td></td></tr>
+<tr><td>LEG-RL</td><td>Rear-left leg</td><td class="num">1</td><td>32.0 x 1.75 x 1.75</td><td>30.000 x 1.500 x 1.500</td><td>longitudinal</td><td></td></tr>
+<tr><td>LEG-RR</td><td>Rear-right leg</td><td class="num">1</td><td>32.0 x 1.75 x 1.75</td><td>30.000 x 1.500 x 1.500</td><td>longitudinal</td><td></td></tr>
+<tr><td>GUSSET</td><td>Corner gusset</td><td class="num">4</td><td>7.0 x 7.0 x 0.5</td><td>6.000 x 6.000 x 0.500</td><td>plywood-9-ply</td><td>45-degree triangle gussets at leg-to-rail joint</td></tr></tbody></table></section>
+<section><h2>Tuning &amp; validation</h2><table><thead><tr><th>row_id</th><th>note_id</th><th>phase</th><th>target_hz</th><th>measured_hz</th><th>cents_target</th><th>cents_actual</th><th>tuner_make_model</th><th>temp_F</th><th>humidity_RH_percent</th><th>environment_notes</th><th>date</th><th>result</th></tr></thead><tbody><tr><td>V1</td><td>ALL</td><td>prediction-paper</td><td>per family-spec</td><td></td><td class="num">0</td><td></td><td>N/A</td><td class="num">68</td><td class="num">45</td><td>design table, pre-cut</td><td></td><td>first-order Euler-Bernoulli prediction; logged from family-spec.csv</td></tr>
+<tr><td>V2</td><td>A5</td><td>post-cut</td><td class="num">880.00</td><td></td><td class="num">0</td><td></td><td>Korg OT-120</td><td class="num">68</td><td class="num">45</td><td>shop bench, immediately after surface plane</td><td></td><td>first measurement; expected to read low if length over rough</td></tr>
+<tr><td>V3</td><td>A5</td><td>post-shave</td><td class="num">880.00</td><td></td><td class="num">0</td><td></td><td>Korg OT-120</td><td class="num">68</td><td class="num">45</td><td>shop bench, after end-shaving for fundamental</td><td></td><td>shave 1/64 in increments; recheck</td></tr>
+<tr><td>V4</td><td>A5</td><td>post-finish</td><td class="num">880.00</td><td></td><td>-3 to 0</td><td></td><td>Korg OT-120</td><td class="num">68</td><td class="num">45</td><td>shop bench, 24 hours after final tung-oil coat</td><td></td><td>finish adds mass; expected drift -2 to -4 cents</td></tr>
+<tr><td>V5</td><td>A5</td><td>post-resonator-install</td><td class="num">880.00</td><td></td><td class="num">0</td><td></td><td>Korg OT-120</td><td class="num">68</td><td class="num">45</td><td>shop, with resonator tube installed at quarter-wave length</td><td></td><td>deferred to v2 build</td></tr>
+<tr><td>V6</td><td>ALL</td><td>30-day-moisture</td><td>per family-spec</td><td></td><td>within +/-5</td><td></td><td>Korg OT-120</td><td>TBD</td><td>TBD</td><td>30 days post-finish; log temp and RH</td><td></td><td>retune any bar drifting beyond +/-5 cents</td></tr>
+<tr><td>V7</td><td>ALL</td><td>60-day-moisture</td><td>per family-spec</td><td></td><td>within +/-5</td><td></td><td>Korg OT-120</td><td>TBD</td><td>TBD</td><td>60 days post-finish; log temp and RH</td><td></td><td>second moisture check; if stable retire moisture rows</td></tr>
+<tr><td>V8</td><td>C5-C6-C7</td><td>full-octave-evenness</td><td>523.25, 1046.50, 2093.00</td><td></td><td>within +/-5 across the three Cs</td><td></td><td>Korg OT-120</td><td class="num">68</td><td class="num">45</td><td>all three Cs measured in one session for evenness</td><td></td><td>if greater than 10 cents spread, escalate to design review</td></tr></tbody></table></section>
+<section><h2>Known risks</h2><h2>Xylophone — Risks Register</h2>
+<p>Five categories, at least one entry each, every entry with an
+attached verification *test* per the v4 red-team specialist contract.</p>
+<h3>Acoustic</h3>
+<h3>bar-cracking-from-hard-mallets
+**Risk.** Hard rubber and lexan mallets, especially struck near the
+bar end rather than at the strike line, can crack a flat-bar Padauk
+bar within months. Hard mallets are appropriate for xylophone — but
+the failure mode is real and accelerates with low ambient humidity.</h3>
+<p>**Test.** Strike test: with the C5 bar (longest, most stress) clamped
+in the suspension cord, strike 100 times near the strike line and
+50 times deliberately near the end with a hard rubber mallet. Inspect
+for hairline cracks under raking light. Repeat after 30 days at
+shop ambient. Pass = no visible cracks; fail = any crack.</p>
+<h3>first-mode-vs-second-mode-misalignment
+**Risk.** First-order math predicts only `f_1`. The 12th-overtone
+xylophone tuning convention asks for the second flexural mode to
+sit at a 3:1 ratio, which a flat bar does **not** naturally do —
+the unpinched second-mode ratio of a free-free Euler-Bernoulli
+beam is closer to 2.756. Means players will hear the second mode
+&quot;out of tune&quot; with the fundamental.</h3>
+<p>**Test.** Spectrum-analyzer measurement (free phone app like
+SpectroidPro): pluck/strike the bar, capture the spectrum, identify
+the fundamental and the strongest second peak, compute the ratio.
+Pass = ratio between 2.7 and 3.0 (unundercut bars cluster around
+2.756); fail = ratio outside that band. Document. The marimba sister
+repo will fix this with arch undercut; the xylophone v1 packet
+*accepts* the natural ratio and notes it on the validation sheet.</p>
+<h3>Structural</h3>
+<h3>moisture-retune-drift
+**Risk.** Padauk at 6–8% MC at glue-up will move when the shop ambient
+changes. A 4% MC swing across a humid summer to a dry winter can shift
+fundamentals by 5–15 cents. Not a structural failure, but a tuning
+failure that compounds across all 25 bars.</h3>
+<p>**Test.** Record temp/RH at every measurement row in `validation.csv`
+(rows V2 through V8). Re-measure every bar at 30 and 60 days
+(rows V6, V7). Pass = drift within ±5 cents on all bars at both
+checkpoints; fail = drift exceeds ±5 cents — flag the bar in
+`record_measurement.py`, update the per-family corrections database.</p>
+<h3>cord-hole-tear-out
+**Risk.** 1/8&quot; node holes drilled near the bar&#x27;s high-stress mode
+zone. Repeated player force on the cord at the hole can tear out the
+hole, especially if grain runs across it.</h3>
+<p>**Test.** Pull-test on the longest bar (C5): tie the suspension cord
+through both holes, suspend the bar, hang a 5-lb weight from the
+center of the bar, hold for 60 seconds. Inspect holes for cracking
+or elongation. Pass = no visible damage; fail = elongation, splitting,
+or cord chafing. If fail, drill a slightly larger hole and chamfer
+both ends.</p>
+<h3>Ergonomic</h3>
+<h3>frame-tipping-on-uneven-floor
+**Risk.** 4-leg trestle frame with a 21&quot; rail and 30&quot; leg height can
+tip if a player strikes near the rail end with a heavy two-handed
+attack on an uneven floor.</h3>
+<p>**Test.** Place frame on a 5° tilted board. Have a player strike
+the C5 bar (rail end) with full two-handed force using yarn-wrapped
+medium mallets. Frame should not tip. Pass = stable; fail = tips.
+Mitigation if fail: add 6&quot; leg-foot crossbraces or weight the bottom
+of each leg.</p>
+<h3>Supply</h3>
+<h3>honduras-rosewood-cites-lead-time
+**Risk.** If a player overrides the Padauk default and chooses
+Honduras Rosewood, the species is **CITES Appendix II** as of
+2017. Sourcing with proper documentation is slow (60–120 days)
+and expensive (~3× Padauk).</h3>
+<p>**Test.** If HR is selected, validate before order: supplier provides
+CITES export permit number; cross-check against the CITES species
+database. Pass = permit number valid and product description matches;
+fail = no permit or mismatch — reject the order, fall back to Padauk.</p>
+<h3>Fit/Finish</h3>
+<h3>tung-oil-finish-darkening-padauk
+**Risk.** Padauk is naturally bright orange-red but oxidizes to a
+deeper brown over months. Tung oil accelerates the oxidation. After
+6–12 months bars look noticeably darker than at first build —
+visual mismatch if a single bar is replaced later.</h3>
+<p>**Test.** Cut a 2&quot;×2&quot; Padauk swatch at the same time as the bars.
+Apply same finish schedule. Store with the bars. After 30, 60, 180
+days, photograph swatch under controlled light. Pass = expected
+gradual darkening, no spotting or blooming; fail = uneven oxidation
+patches — switch to a UV-blocking topcoat.</p></section>
+<section><h2>Family overview</h2><ul><li><a href="family/?.html">? — </a></li><li><a href="family/?.html">? — </a></li><li><a href="family/?.html">? — </a></li><li><a href="family/?.html">? — </a></li><li><a href="family/?.html">? — </a></li><li><a href="family/?.html">? — </a></li><li><a href="family/?.html">? — </a></li><li><a href="family/?.html">? — </a></li><li><a href="family/?.html">? — </a></li><li><a href="family/?.html">? — </a></li><li><a href="family/?.html">? — </a></li><li><a href="family/?.html">? — </a></li><li><a href="family/?.html">? — </a></li><li><a href="family/?.html">? — </a></li><li><a href="family/?.html">? — </a></li><li><a href="family/?.html">? — </a></li><li><a href="family/?.html">? — </a></li><li><a href="family/?.html">? — </a></li><li><a href="family/?.html">? — </a></li><li><a href="family/?.html">? — </a></li><li><a href="family/?.html">? — </a></li><li><a href="family/?.html">? — </a></li><li><a href="family/?.html">? — </a></li><li><a href="family/?.html">? — </a></li><li><a href="family/?.html">? — </a></li></ul></section>
+<section><h2>Resources</h2><ul><li><a href="../README.md">Project README</a></li><li><a href="../capstone-deck.pptx">Capstone deck (.pptx)</a></li><li><a href="../print-packet.pdf">Printable shop packet (.pdf)</a></li><li><a href="https://github.com/tonykoop">Tony's GitHub</a></li></ul></section>
+</main>
+<footer>
+Built by Tony Koop · CC-BY 4.0 · <a href="https://github.com/tonykoop">github.com/tonykoop</a>
+</footer>
+</body>
+</html>

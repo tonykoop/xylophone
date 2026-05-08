@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 360" width="800" height="360" role="img" aria-label="Xylophone hero placeholder — schematic of a 25-bar chromatic xylophone in Padauk on a parametric trestle frame">
+  <defs>
+    <linearGradient id="bar" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#b14a2b"/>
+      <stop offset="1" stop-color="#7a2f1c"/>
+    </linearGradient>
+    <linearGradient id="frame" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#3a2618"/>
+      <stop offset="1" stop-color="#1c120b"/>
+    </linearGradient>
+  </defs>
+  <rect x="0" y="0" width="800" height="360" fill="#f4ede2"/>
+  <!-- frame rails -->
+  <rect x="40" y="120" width="720" height="14" fill="url(#frame)"/>
+  <rect x="40" y="246" width="720" height="14" fill="url(#frame)"/>
+  <!-- legs -->
+  <rect x="60" y="260" width="14" height="80" fill="url(#frame)"/>
+  <rect x="726" y="260" width="14" height="80" fill="url(#frame)"/>
+  <rect x="60" y="20" width="14" height="100" fill="url(#frame)"/>
+  <rect x="726" y="20" width="14" height="100" fill="url(#frame)"/>
+  <!-- 25 bars, length tapers right (high notes shorter) -->
+  <g>
+    <!-- Drawn from longest (left, low note C5) to shortest (right, high note C7). -->
+  </g>
+  <g id="bars">
+    <!-- programmatic-style fan: 25 bars -->
+    <rect x="80"  y="100" width="22" height="180" fill="url(#bar)"/>
+    <rect x="108" y="106" width="22" height="168" fill="url(#bar)"/>
+    <rect x="136" y="112" width="22" height="156" fill="url(#bar)"/>
+    <rect x="164" y="118" width="22" height="144" fill="url(#bar)"/>
+    <rect x="192" y="122" width="22" height="136" fill="url(#bar)"/>
+    <rect x="220" y="126" width="22" height="128" fill="url(#bar)"/>
+    <rect x="248" y="130" width="22" height="120" fill="url(#bar)"/>
+    <rect x="276" y="134" width="22" height="112" fill="url(#bar)"/>
+    <rect x="304" y="138" width="22" height="104" fill="url(#bar)"/>
+    <rect x="332" y="142" width="22" height="96"  fill="url(#bar)"/>
+    <rect x="360" y="146" width="22" height="88"  fill="url(#bar)"/>
+    <rect x="388" y="150" width="22" height="80"  fill="url(#bar)"/>
+    <rect x="416" y="154" width="22" height="72"  fill="url(#bar)"/>
+    <rect x="444" y="158" width="22" height="64"  fill="url(#bar)"/>
+    <rect x="472" y="160" width="22" height="60"  fill="url(#bar)"/>
+    <rect x="500" y="162" width="22" height="56"  fill="url(#bar)"/>
+    <rect x="528" y="164" width="22" height="52"  fill="url(#bar)"/>
+    <rect x="556" y="166" width="22" height="48"  fill="url(#bar)"/>
+    <rect x="584" y="168" width="22" height="44"  fill="url(#bar)"/>
+    <rect x="612" y="170" width="22" height="40"  fill="url(#bar)"/>
+    <rect x="640" y="172" width="22" height="36"  fill="url(#bar)"/>
+    <rect x="666" y="174" width="22" height="32"  fill="url(#bar)"/>
+    <rect x="690" y="175" width="22" height="30"  fill="url(#bar)"/>
+    <rect x="712" y="176" width="22" height="28"  fill="url(#bar)"/>
+    <rect x="734" y="177" width="22" height="26"  fill="url(#bar)"/>
+  </g>
+  <text x="400" y="340" text-anchor="middle" font-family="Inter, system-ui, sans-serif" font-size="16" fill="#3a2618">Xylophone — 25-bar chromatic, C5–C7, Padauk on parametric trestle frame (placeholder)</text>
+  <text x="400" y="20" text-anchor="middle" font-family="Inter, system-ui, sans-serif" font-size="12" fill="#7a2f1c">replace with hero photo when first prototype is built</text>
+</svg>

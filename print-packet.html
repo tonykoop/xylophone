@@ -1,0 +1,1626 @@
+<!doctype html><html><head><meta charset="utf-8"><title>Xylophone Capstone</title><style>
+body { font-family: Arial, sans-serif; color: #111; line-height: 1.35; max-width: 900px; margin: 32px auto; }
+h1 { font-size: 28px; border-bottom: 2px solid #222; padding-bottom: 6px; }
+h2 { font-size: 22px; margin-top: 28px; }
+h3 { font-size: 18px; }
+table { border-collapse: collapse; width: 100%; margin: 12px 0 20px; font-size: 12px; }
+th, td { border: 1px solid #888; padding: 6px; vertical-align: top; }
+th { background: #e8eef8; }
+pre { white-space: pre-wrap; background: #f5f5f5; padding: 10px; border: 1px solid #ddd; }
+.page-break { page-break-before: always; break-before: page; }
+@media print { body { margin: 0.5in; max-width: none; } a { color: #111; } }
+</style></head><body>
+<h1>Xylophone Capstone Print Packet</h1>
+
+<p>Generated: 2026-05-08</p>
+<p>Packet folder: `/mnt/c/Users/Tony/Documents/GitHub/xylophone`</p>
+
+<h2>File Map</h2>
+
+<table>
+<tr><th>File</th><th>Purpose</th></tr>
+<tr><td>`design.md`</td><td>Project intent, catalog metadata, assumptions, and validation plan.</td></tr>
+<tr><td>`bom.csv`</td><td>Starter bill of materials with part categories, quantities, drawing refs, and notes.</td></tr>
+<tr><td>`sourcing.csv`</td><td>Supplier/search tracker with specs, price/date fields, lead time, substitutes, and risks.</td></tr>
+<tr><td>`cut-list.csv`</td><td>Rough/final stock sizes, material, grain/orientation, operations, yield, and offcuts.</td></tr>
+<tr><td>`drawing-brief.md`</td><td>Manufacturing drawing and technical product sketch brief.</td></tr>
+<tr><td>`assembly-manual.md`</td><td>Shop-facing sequence, tools, fixtures, safety, tuning, finishing, and maintenance notes.</td></tr>
+<tr><td>`validation.csv`</td><td>Target/measured values, tolerance, environment, result, and tuning/build action log.</td></tr>
+<tr><td>`supplier-rfq.md`</td><td>Supplier email/request-for-quote starter.</td></tr>
+<tr><td>`visual-bom-brief.md`</td><td>Art direction for an image-forward visual BOM.</td></tr>
+<tr><td>`wolfram-starter.wl`</td><td>Wolfram starter for physics, optimization, visualization, and validation.</td></tr>
+<tr><td>`README.md`</td><td>Project artifact.</td></tr>
+<tr><td>`family-spec.csv`</td><td>Project artifact.</td></tr>
+<tr><td>`jig-decision.md`</td><td>Project artifact.</td></tr>
+<tr><td>`photo-shotlist.md`</td><td>Project artifact.</td></tr>
+<tr><td>`resources.md`</td><td>Project artifact.</td></tr>
+<tr><td>`risks.md`</td><td>Project artifact.</td></tr>
+</table>
+
+<div class="page-break"></div>
+
+<h2>design.md</h2>
+
+<p>Project intent, catalog metadata, assumptions, and validation plan.</p>
+
+<h1>Xylophone — Design</h1>
+
+<p>A 25-bar chromatic xylophone, C5 to C7, in Padauk on a parametric trestle frame.</p>
+<p>Free-free flat-bar geometry, 12th-overtone tuning convention, optional</p>
+<p>quarter-wave closed-pipe resonators (deferred). Designed deliberately as the</p>
+<p>*simpler* sibling of a future marimba sister repo: every place this design</p>
+<p>chooses the simpler path, the marimba-equivalent is documented inline so the</p>
+<p>marimba scaffold inherits cleanly.</p>
+
+<h2>Intent</h2>
+
+<p>Ship a parametric, validator-clean, public-readable Mode A build packet for</p>
+<p>a serious wooden tuned-bar idiophone — small enough to build in one shop</p>
+<p>session, honest enough about the physics that the predicted frequencies and</p>
+<p>the measured frequencies will disagree on first cut and the workflow can</p>
+<p>correct them, structured enough that a marimba follow-on can reuse the</p>
+<p>family table, the validation rows, the suspension geometry, the SolidWorks</p>
+<p>master-layout convention, and the empirical-correction guard rules.</p>
+
+<p>The reader should leave with: (a) a parametric design table whose inputs</p>
+<p>are wood species, bar thickness, target pitch, and frame geometry; (b) a</p>
+<p>defensible first-order frequency prediction per note; (c) a measured-tuning</p>
+<p>workflow that closes the loop on the prediction; (d) a clear &quot;this is what</p>
+<p>turns into marimba next&quot; map.</p>
+
+<h2>Governing Model</h2>
+
+<p>Free-free Euler-Bernoulli transverse beam vibration, first mode:</p>
+
+<p>    f_1 = 1.028 × (h / L²) × √(E / ρ)</p>
+
+<p>Symbols and units (SI):</p>
+
+<ul>
+<li>`h` — bar thickness (m)</li>
+<li>`L` — bar length (m)</li>
+<li>`E` — Young&#x27;s modulus along grain (Pa)</li>
+<li>`ρ` — density (kg/m³)</li>
+<li>`f_1` — first-mode frequency (Hz)</li>
+</ul>
+
+<p>Reference: `acoustic-models.md` Free-Free Beams section. The formula</p>
+<p>follows from `K_free_free ≈ 6.36 × K_cantilever` applied to the</p>
+<p>cantilever form `f_1 ≈ 0.162 × (h/L²) × √(E/ρ)`. Suspension nodes for</p>
+<p>the first free-free mode are at **22.4% and 77.6% of L** — every</p>
+<p>cord-hole in `family-spec.csv` is placed there.</p>
+
+<p>**First-order estimate caveat.** Per the `acoustic-models.md`</p>
+<p>empirical-correction guard rules, K2 corrections, scale-offset tables,</p>
+<p>and end-corrections **do not apply** to bar idiophones. Material</p>
+<p>K-constants from the cantilever wood table are species-specific and</p>
+<p>only valid for the free-free / fixed-free regime — they propagate to</p>
+<p>this packet via the 6.36× factor above. Every predicted frequency in</p>
+<p>`family-spec.csv` is flagged as *first-order*; `validation.csv` is the</p>
+<p>mechanism that closes the gap with measured data after first prototype.</p>
+
+<p>**Xylophone tuning convention.** Bars are tuned to align the *12th</p>
+<p>overtone* (3:1 frequency ratio above the fundamental — actually the</p>
+<p>second flexural mode tuned to a perfect 12th of the fundamental in the</p>
+<p>concert convention; first-order math reports `f_1` only). Marimba</p>
+<p>tunes the second mode to a 4:1 ratio (two octaves) by parabolic arch</p>
+<p>undercut. **This packet uses no arch undercut** — bars are flat-bottom</p>
+<p>rectangular blanks, end-shaved for fundamental tuning. The</p>
+<p>12th-overtone target is documented as a *measurement target* in</p>
+<p>`validation.csv`, not a CAD geometry — adjust at the bench.</p>
+
+<p>&gt; Marimba-equivalent: replace the flat-bottom geometry with a parabolic</p>
+<p>&gt; CNC arch on the underside (`acoustic-models.md`:</p>
+<p>&gt; `center_thickness = edge_thickness × (target_freq / flat_bar_freq)²`,</p>
+<p>&gt; minimum center 0.25&quot;). Replace the 12th-overtone target with the</p>
+<p>&gt; 4:1 octave-and-a-fifth target. Replace the optional resonators with</p>
+<p>&gt; mandatory tuned tubes.</p>
+
+<h2>Family Plan</h2>
+
+<p>Two octaves chromatic, C5 to C7, 25 bars. Family geometry held</p>
+<p>constant: bar width `W = 1.500&quot;`, bar thickness `h = 0.875&quot;` (7/8&quot;</p>
+<p>flat stock). Only `L` varies — solved per note from the governing</p>
+<p>model. See `family-spec.csv` for the full table.</p>
+
+<p>Predicted lengths run from **16.683&quot; at C5** to **8.342&quot; at C7**.</p>
+<p>These are noticeably longer than a concert xylophone of the same</p>
+<p>range because the design has no arch undercut — the arch is what</p>
+<p>lets a concert xylo hit the same pitch with a 10–12&quot; bar. The</p>
+<p>flat-bar tradeoff is honest, parametric, and easier to first-cut.</p>
+
+<p>Width and thickness are constants in this v1 family. Production</p>
+<p>xylophones often taper width across the range; that&#x27;s a deferred</p>
+<p>optimization, called out in Open Assumptions.</p>
+
+<p>&gt; Marimba-equivalent: keep width constant within an octave but step</p>
+<p>&gt; width up at register boundaries (low marimba bars are wider). Add an</p>
+<p>&gt; arch-depth column. Add a resonator-tube-bore column.</p>
+
+<h2>Wood Species</h2>
+
+<p>Three-tier shortlist; **Padauk is the spec&#x27;s primary** because it is</p>
+<p>sustainably sourced, has predictable acoustic properties, machines</p>
+<p>cleanly, and is widely available in 4/4 quartersawn:</p>
+
+<table>
+<tr><th>Tier</th><th>Species</th><th>E (GPa)</th><th>ρ (kg/m³)</th><th>√(E/ρ) (m/s)</th><th>Notes</th></tr>
+</table>
+<p>|-------------------|---------------------|---------|-----------|--------------|----------------------------------------------------|</p>
+<table>
+<tr><th>Primary</th><th>African Padauk</th><th>12.6</th><th>745</th><th>4112</th><th>Spec default. Stable, predictable, sustainable.</th></tr>
+<tr><td>Traditional</td><td>Honduras Rosewood</td><td>14.1</td><td>1000</td><td>3756</td><td>Concert standard. **CITES II** — sourcing risk.</td></tr>
+<tr><td>Educational/budget</td><td>Hard Maple</td><td>12.6</td><td>705</td><td>4229</td><td>Cheapest, most available, dampest sound.</td></tr>
+</table>
+
+<p>Switching the primary requires a single edit in</p>
+<p>`xylophone-design-table.xlsx` (input cell `wood_species`); the family</p>
+<p>table re-solves automatically. The validator runs on the table&#x27;s</p>
+<p>current state, not on a hardcoded snapshot.</p>
+
+<p>&gt; Marimba-equivalent: same shortlist, but most concert marimbas use</p>
+<p>&gt; Padauk or Honduras Rosewood; Birch is the educational tier.</p>
+
+<h2>Tuning Workflow</h2>
+
+<p>The validation loop has eight rows in `validation.csv`. Two are</p>
+<p>prediction-only; six require a tuner and a chromatic environment log:</p>
+
+<p>1. Rough-cut prediction (paper, before any cut).</p>
+<p>2. Post-cut fundamental measurement (immediately after bandsaw + plane).</p>
+<p>3. Post-shave measurement (after end-shaving for fundamental tune).</p>
+<p>4. Post-finish measurement (after oil/wax — finish adds mass, drops pitch).</p>
+<p>5. Post-resonator-install measurement (when resonators are installed; deferred).</p>
+<p>6. 30-day moisture re-measure (drift after first shop cycle).</p>
+<p>7. 60-day moisture re-measure (drift after a full season cycle).</p>
+<p>8. Full-octave evenness check (every C across both octaves on the same day).</p>
+
+<p>Each row carries `tuner_make_model`, `temp_F`, `humidity_RH_percent`,</p>
+<p>and `cents_target` columns matching `record_measurement.py`&#x27;s schema.</p>
+<p>A measured Hz feeds `record_measurement.py --packet . --note-id &lt;X&gt;</p>
+<p>--measured-hz &lt;f&gt;` and the per-family corrections database absorbs</p>
+<p>the delta.</p>
+
+<h2>Resonator Decision</h2>
+
+<p>**Optional, deferred to v2 build.** The L-per-note math is computed</p>
+<p>in `family-spec.csv` (column `resonator_l_in_optional`) using the</p>
+<p>quarter-wave closed-pipe formula with end correction:</p>
+
+<p>    L_resonator = c / (4 f) − 0.82 × bore</p>
+
+<p>with `c = 343 m/s` and `bore = 1.500&quot;`. Lengths run from **5.22&quot; at</p>
+<p>C5** down to **0.38&quot; at C7**. The high-end values are too short to</p>
+<p>build practically — the production decision will be: tune resonators</p>
+<p>on bars at C5 through approximately G5 (lengths &gt; 3&quot;), and skip</p>
+<p>resonators on the upper octave. This decision is made when resonators</p>
+<p>are installed, not now.</p>
+
+<p>&gt; Marimba-equivalent: resonators are mandatory; the bore is bigger</p>
+<p>&gt; (typically 2.0–3.0&quot;); each tube is plugged at the bottom and tuned</p>
+<p>&gt; at the top end. Marimba tubes are also typically *not* trimmed by</p>
+<p>&gt; the 0.82×bore end-correction directly — they&#x27;re trimmed by ear at</p>
+<p>&gt; the bench.</p>
+
+<h2>Frame Layout</h2>
+
+<p>4-leg parametric trestle frame, two suspension rails running the full</p>
+<p>length of the bar fan. Rail length sized to `max(family-spec L) +</p>
+<p>4&quot; margin = 16.683 + 4 = 20.683&quot;` rounded up to **21&quot;**. Leg</p>
+<p>height **30&quot;** (standard standing-play height; sit-down play needs</p>
+<p>a swap to 24&quot;). Cord suspension with `1/8&quot;` paracord through the</p>
+<p>node holes; cord termination at the rail ends with a tied-loop and</p>
+<p>finish washer.</p>
+
+<p>Frame parts are CNC candidates (rails, leg blanks, gussets) — see</p>
+<p>`cnc/operations.csv`. Bars are explicitly out of CNC scope: bandsaw</p>
+<p>to rough → surface plane to thickness → drum-sand surfaces → drill</p>
+<p>node holes (jig) → end-shave for tuning (manual). The CNC plan</p>
+<p>states this exclusion in the setup sheet.</p>
+
+<p>&gt; Marimba-equivalent: longer frame (4-octave marimba is 5+ feet),</p>
+<p>&gt; resonator wells underneath each bar pair, height-adjustable legs,</p>
+<p>&gt; traveling-cart casters.</p>
+
+<h2>Mallets</h2>
+
+<p>Hard rubber → lexan → rosewood-head shortlist. Hard mallets are</p>
+<p>appropriate for xylophone (the percussive, glassy attack is part of</p>
+<p>the instrument&#x27;s voice). They are **harder than marimba mallets**</p>
+<p>and *can* crack a softer-wood bar — see `risks.md` entry</p>
+<p>`bar-cracking-from-hard-mallets`. Standard practice: yarn-wrapped</p>
+<p>mallets for low octave, lexan/rubber for upper. v1 packet ships with</p>
+<p>hard rubber as the recommended starter; lexan and rosewood are</p>
+<p>swap-ins.</p>
+
+<p>&gt; Marimba-equivalent: yarn-wrapped soft mallets across the entire</p>
+<p>&gt; range. The bars are softer (Honduras Rosewood is a hardwood but</p>
+<p>&gt; with arch undercut the center is thin); soft mallets prevent</p>
+<p>&gt; cracking and produce a warmer overtone profile.</p>
+
+<h2>Marimba-Equivalent Hooks (summary map)</h2>
+
+<table>
+<tr><th>Decision</th><th>Xylophone (this packet)</th><th>Marimba (sister repo, deferred)</th></tr>
+</table>
+<p>|------------------------|---------------------------------------|----------------------------------------|</p>
+<table>
+<tr><th>Bar geometry</th><th>Flat-bottom rectangular</th><th>Parabolic arch undercut on underside</th></tr>
+<tr><td>Tuning ratio target</td><td>12th overtone (3:1)</td><td>4:1 (two octaves)</td></tr>
+<tr><td>Resonators</td><td>Optional, deferred</td><td>Mandatory, tuned per bar</td></tr>
+<tr><td>Bar width policy</td><td>Constant 1.500&quot; across range</td><td>Step up at register boundaries</td></tr>
+<tr><td>Mallet hardness</td><td>Hard rubber → lexan → rosewood</td><td>Yarn-wrapped soft → medium</td></tr>
+<tr><td>Suspension cord</td><td>1/8&quot; paracord</td><td>3/16&quot; or 1/4&quot; (heavier bars)</td></tr>
+<tr><td>Frame length</td><td>21&quot; rail</td><td>60&quot;+ rail, multi-octave</td></tr>
+<tr><td>Wood primary</td><td>Padauk</td><td>Padauk or Honduras Rosewood</td></tr>
+</table>
+
+<p>A future `marimba/` repo can `cp -r xylophone/* marimba/` and edit</p>
+<p>exactly these eight rows in the design table to bootstrap.</p>
+
+<h2>Open Assumptions</h2>
+
+<p>1. **No measured data yet.** Every frequency in `family-spec.csv` is a</p>
+<p>   first-order prediction. First measurement after first prototype is</p>
+<p>   the single most important next step. (`validation.csv` row 2.)</p>
+<p>2. **Wood species.** Padauk is the primary by spec choice; Honduras</p>
+<p>   Rosewood and Hard Maple swap in by changing one cell in the</p>
+<p>   workbook. CITES sourcing for HR is not analyzed in this packet.</p>
+<p>3. **Family range.** C5–C7 chromatic is the chosen default. F4–F6</p>
+<p>   diatonic and G4–G6 diatonic remain documented alternatives — they</p>
+<p>   trade range for shorter bar stock and a smaller frame.</p>
+<p>4. **Bar thickness held constant at 7/8&quot;.** A real production xylo</p>
+<p>   often steps thickness up in the low octave to keep bars from being</p>
+<p>   absurdly long. This packet keeps thickness constant for parametric</p>
+<p>   simplicity and accepts the 16.7&quot; C5 bar.</p>
+<p>5. **Resonator strategy.** The L-per-note math is computed but</p>
+<p>   resonators are not specified in the BOM. Adding them is additive,</p>
+<p>   not breaking — the frame design leaves vertical clearance.</p>
+<p>6. **CAD.** SolidWorks master-layout part is deferred; the</p>
+<p>   `cad/` folder has a stub README pointing at the tongue-drum</p>
+<p>   convention and the existing `xylophone-design-table.xlsx`.</p>
+<p>7. **Mallet supplier.** v1 lists generic hard-rubber mallets; specific</p>
+<p>   supplier (Innovative Percussion vs Encore vs Vic Firth) is not</p>
+<p>   selected.</p>
+
+<p>These eight rows are exactly the assumptions the handoff report</p>
+<p>flags. Each becomes a `validation.csv` or `bom.csv` line item once</p>
+<p>the gating decision is made.</p>
+
+<div class="page-break"></div>
+
+<h2>bom.csv</h2>
+
+<p>Starter bill of materials with part categories, quantities, drawing refs, and notes.</p>
+
+<table>
+<tr><th>part_id</th><th>part_name</th><th>qty</th><th>unit</th><th>estimated_cost</th><th>supplier_candidate</th><th>notes</th></tr>
+<tr><td>BAR-STOCK</td><td>Padauk 4/4 quartersawn, surfaced 4 sides, KD 6-8% MC</td><td>1</td><td>board-foot-bundle-25</td><td>180.00</td><td>Bell Forest Products</td><td>sized to yield 25 bars 8.3-16.7in long x 1.5in x 7/8in plus 20% waste</td></tr>
+<tr><td>FRAME-RAIL</td><td>Hard maple 8/4 rail blank 24in x 2.5in x 1.5in</td><td>2</td><td>piece</td><td>28.00</td><td>Bell Forest Products</td><td>two suspension rails; rough oversize</td></tr>
+<tr><td>FRAME-LEG</td><td>Hard maple 8/4 leg blank 32in x 1.75in x 1.75in</td><td>4</td><td>piece</td><td>18.00</td><td>Bell Forest Products</td><td>four legs; rough oversize</td></tr>
+<tr><td>FRAME-GUSSET</td><td>Baltic birch ply 1/2in 12x12 panel</td><td>1</td><td>piece</td><td>14.00</td><td>Lee Valley</td><td>two corner gussets per end</td></tr>
+<tr><td>CORD-NODE</td><td>1/8 inch paracord black 100ft hank</td><td>1</td><td>hank</td><td>9.00</td><td>Lee Valley</td><td>node-suspension cord</td></tr>
+<tr><td>CORD-WASHER</td><td>Brass finish washer 1/8in cord 25-pack</td><td>1</td><td>pack</td><td>8.00</td><td>Lee Valley</td><td>cord termination</td></tr>
+<tr><td>SCREW-FRAME</td><td>#10 x 2in zinc wood screw 50-pack</td><td>1</td><td>pack</td><td>7.00</td><td>Lee Valley</td><td>frame assembly</td></tr>
+<tr><td>GLUE-FRAME</td><td>Titebond III 16oz</td><td>1</td><td>bottle</td><td>12.00</td><td>Lee Valley</td><td>frame joinery</td></tr>
+<tr><td>FINISH-OIL</td><td>Tung oil pure 16oz</td><td>1</td><td>bottle</td><td>18.00</td><td>Lee Valley</td><td>bar and frame finish</td></tr>
+<tr><td>FINISH-WAX</td><td>Beeswax paste 8oz</td><td>1</td><td>tin</td><td>11.00</td><td>Lee Valley</td><td>top coat</td></tr>
+<tr><td>MALLET-HRD</td><td>Hard rubber xylophone mallet pair</td><td>2</td><td>pair</td><td>32.00</td><td>Innovative Percussion</td><td>primary mallet for upper octave</td></tr>
+<tr><td>MALLET-MED</td><td>Yarn-wrapped medium mallet pair</td><td>2</td><td>pair</td><td>38.00</td><td>Innovative Percussion</td><td>alt mallet for low octave</td></tr>
+<tr><td>TUNER-CHROMA</td><td>Korg OT-120 orchestral tuner</td><td>1</td><td>unit</td><td>140.00</td><td>Sweetwater</td><td>validation row 2-8 device of record</td></tr>
+<tr><td>HYGRO-SHOP</td><td>Combo hygrometer-thermometer digital</td><td>1</td><td>unit</td><td>22.00</td><td>Lee Valley</td><td>validation env log</td></tr>
+<tr><td>MOIST-METER</td><td>Pin-style moisture meter</td><td>1</td><td>unit</td><td>38.00</td><td>Lee Valley</td><td>verify 6-8% MC at glue-up</td></tr>
+<tr><td>SANDPAPER-KIT</td><td>Aluminum oxide grit 80-220 assortment</td><td>1</td><td>kit</td><td>18.00</td><td>Lee Valley</td><td>bar surface prep</td></tr>
+<tr><td>DRILL-BIT-NODE</td><td>1/8in brad-point bit</td><td>2</td><td>piece</td><td>4.50</td><td>Lee Valley</td><td>node-hole drilling, jig-mounted</td></tr>
+<tr><td>RESONATOR-TUBE</td><td>Aluminum tube 1.5in OD 36in length</td><td>2</td><td>piece</td><td>TBD</td><td>McMaster-Carr</td><td>deferred to v2 build; sized for resonator option</td></tr>
+</table>
+
+<div class="page-break"></div>
+
+<h2>sourcing.csv</h2>
+
+<p>Supplier/search tracker with specs, price/date fields, lead time, substitutes, and risks.</p>
+
+<table>
+<tr><th>part_id</th><th>supplier_candidate</th><th>required_spec</th><th>search_terms</th><th>lead_time_days_est</th><th>notes</th></tr>
+<tr><td>BAR-STOCK</td><td>Bell Forest Products</td><td>African Padauk 4/4 quartersawn KD to 6-8 percent MC surfaced 4 sides</td><td>padauk 4/4 quartersawn KD S4S</td><td>7</td><td>primary; ask for low-shake low-pin selection</td></tr>
+<tr><td>BAR-STOCK</td><td>West Penn Hardwoods</td><td>African Padauk 4/4 quartersawn KD</td><td>padauk 4/4 quartersawn</td><td>10</td><td>backup if Bell is OOS</td></tr>
+<tr><td>BAR-STOCK</td><td>Cook Woods</td><td>African Padauk billet selection</td><td>padauk billet quartersawn</td><td>14</td><td>third option; pricier but selectable boards</td></tr>
+<tr><td>FRAME-RAIL</td><td>Bell Forest Products</td><td>Hard maple 8/4 KD straight grain</td><td>hard maple 8/4 straight grain</td><td>7</td><td>two boards 30in min length</td></tr>
+<tr><td>FRAME-LEG</td><td>Bell Forest Products</td><td>Hard maple 8/4 KD</td><td>hard maple 8/4</td><td>7</td><td>four leg blanks</td></tr>
+<tr><td>FRAME-GUSSET</td><td>Lee Valley</td><td>Baltic birch plywood 1/2in B/BB grade 12x12</td><td>baltic birch 1/2 plywood 12x12</td><td>5</td><td>or substitute Home Depot if local</td></tr>
+<tr><td>CORD-NODE</td><td>Lee Valley</td><td>Type II 1/8in paracord 100ft</td><td>paracord 1/8 100ft</td><td>5</td><td>black or natural</td></tr>
+<tr><td>CORD-WASHER</td><td>Lee Valley</td><td>Brass finish washer fits 1/8in cord</td><td>brass finish washer 1/8 cord</td><td>5</td><td>or McMaster-Carr 91068A350</td></tr>
+<tr><td>SCREW-FRAME</td><td>Lee Valley</td><td>#10 x 2in steel wood screw zinc</td><td>wood screw #10 2in zinc</td><td>5</td><td>50-pack minimum</td></tr>
+<tr><td>GLUE-FRAME</td><td>Lee Valley</td><td>Titebond III 16oz</td><td>titebond III 16oz</td><td>5</td><td>waterproof PVA, longer open time</td></tr>
+<tr><td>FINISH-OIL</td><td>Lee Valley</td><td>Pure tung oil food-safe 16oz</td><td>pure tung oil 16oz</td><td>5</td><td>food-safe so the kid players are fine</td></tr>
+<tr><td>FINISH-WAX</td><td>Lee Valley</td><td>Beeswax paste furniture finish 8oz</td><td>beeswax furniture paste 8oz</td><td>5</td><td>top coat over tung</td></tr>
+<tr><td>MALLET-HRD</td><td>Innovative Percussion</td><td>Hard rubber xylophone mallet IP240 or equivalent</td><td>IP240 hard rubber xylophone mallet</td><td>7</td><td>alt: Encore EM-1, Vic Firth M134</td></tr>
+<tr><td>MALLET-MED</td><td>Innovative Percussion</td><td>Yarn-wrapped medium marimba mallet</td><td>yarn medium marimba mallet pair</td><td>7</td><td>alt: Encore EX-1</td></tr>
+<tr><td>TUNER-CHROMA</td><td>Sweetwater</td><td>Korg OT-120 orchestral tuner</td><td>Korg OT-120 orchestral tuner</td><td>3</td><td>or Peterson StroboPlus HD if available</td></tr>
+<tr><td>HYGRO-SHOP</td><td>Lee Valley</td><td>Digital hygrometer thermometer combo</td><td>digital hygrometer thermometer shop</td><td>5</td><td>target accuracy +/-3% RH</td></tr>
+<tr><td>MOIST-METER</td><td>Lee Valley</td><td>Pin-style moisture meter wood</td><td>pin moisture meter wood</td><td>5</td><td>or General MM50</td></tr>
+<tr><td>SANDPAPER-KIT</td><td>Lee Valley</td><td>Aluminum oxide sanding sheet variety 80-220 grit</td><td>aluminum oxide sandpaper variety pack</td><td>5</td><td>hand-sand bar surfaces post-plane</td></tr>
+<tr><td>DRILL-BIT-NODE</td><td>Lee Valley</td><td>Brad point drill bit 1/8in</td><td>brad point bit 1/8 inch</td><td>5</td><td>two for spares</td></tr>
+<tr><td>RESONATOR-TUBE</td><td>McMaster-Carr</td><td>6061 aluminum tube 1.5in OD 0.065in wall 36in</td><td>aluminum tube 1.5 OD 0.065 wall</td><td>5</td><td>deferred; quote at v2 build time</td></tr>
+</table>
+
+<div class="page-break"></div>
+
+<h2>cut-list.csv</h2>
+
+<p>Rough/final stock sizes, material, grain/orientation, operations, yield, and offcuts.</p>
+
+<table>
+<tr><th>part_id</th><th>part_name</th><th>qty</th><th>rough_dimensions_in</th><th>final_dimensions_in</th><th>grain_orientation</th><th>notes</th></tr>
+<tr><td>BAR-C5</td><td>Bar C5</td><td>1</td><td>18.0 x 1.625 x 1.0</td><td>16.683 x 1.500 x 0.875</td><td>longitudinal-quarter</td><td>longest bar; cut from longest blank</td></tr>
+<tr><td>BAR-Cs5</td><td>Bar C#5</td><td>1</td><td>17.5 x 1.625 x 1.0</td><td>16.208 x 1.500 x 0.875</td><td>longitudinal-quarter</td><td></td></tr>
+<tr><td>BAR-D5</td><td>Bar D5</td><td>1</td><td>17.0 x 1.625 x 1.0</td><td>15.747 x 1.500 x 0.875</td><td>longitudinal-quarter</td><td></td></tr>
+<tr><td>BAR-Ds5</td><td>Bar D#5</td><td>1</td><td>16.5 x 1.625 x 1.0</td><td>15.299 x 1.500 x 0.875</td><td>longitudinal-quarter</td><td></td></tr>
+<tr><td>BAR-E5</td><td>Bar E5</td><td>1</td><td>16.0 x 1.625 x 1.0</td><td>14.863 x 1.500 x 0.875</td><td>longitudinal-quarter</td><td></td></tr>
+<tr><td>BAR-F5</td><td>Bar F5</td><td>1</td><td>15.5 x 1.625 x 1.0</td><td>14.440 x 1.500 x 0.875</td><td>longitudinal-quarter</td><td></td></tr>
+<tr><td>BAR-Fs5</td><td>Bar F#5</td><td>1</td><td>15.0 x 1.625 x 1.0</td><td>14.029 x 1.500 x 0.875</td><td>longitudinal-quarter</td><td></td></tr>
+<tr><td>BAR-G5</td><td>Bar G5</td><td>1</td><td>15.0 x 1.625 x 1.0</td><td>13.630 x 1.500 x 0.875</td><td>longitudinal-quarter</td><td></td></tr>
+<tr><td>BAR-Gs5</td><td>Bar G#5</td><td>1</td><td>14.5 x 1.625 x 1.0</td><td>13.242 x 1.500 x 0.875</td><td>longitudinal-quarter</td><td></td></tr>
+<tr><td>BAR-A5</td><td>Bar A5</td><td>1</td><td>14.0 x 1.625 x 1.0</td><td>12.865 x 1.500 x 0.875</td><td>longitudinal-quarter</td><td></td></tr>
+<tr><td>BAR-As5</td><td>Bar A#5</td><td>1</td><td>13.5 x 1.625 x 1.0</td><td>12.498 x 1.500 x 0.875</td><td>longitudinal-quarter</td><td></td></tr>
+<tr><td>BAR-B5</td><td>Bar B5</td><td>1</td><td>13.5 x 1.625 x 1.0</td><td>12.143 x 1.500 x 0.875</td><td>longitudinal-quarter</td><td></td></tr>
+<tr><td>BAR-C6</td><td>Bar C6</td><td>1</td><td>13.0 x 1.625 x 1.0</td><td>11.797 x 1.500 x 0.875</td><td>longitudinal-quarter</td><td></td></tr>
+<tr><td>BAR-Cs6</td><td>Bar C#6</td><td>1</td><td>12.5 x 1.625 x 1.0</td><td>11.461 x 1.500 x 0.875</td><td>longitudinal-quarter</td><td></td></tr>
+<tr><td>BAR-D6</td><td>Bar D6</td><td>1</td><td>12.5 x 1.625 x 1.0</td><td>11.135 x 1.500 x 0.875</td><td>longitudinal-quarter</td><td></td></tr>
+<tr><td>BAR-Ds6</td><td>Bar D#6</td><td>1</td><td>12.0 x 1.625 x 1.0</td><td>10.818 x 1.500 x 0.875</td><td>longitudinal-quarter</td><td></td></tr>
+<tr><td>BAR-E6</td><td>Bar E6</td><td>1</td><td>11.5 x 1.625 x 1.0</td><td>10.510 x 1.500 x 0.875</td><td>longitudinal-quarter</td><td></td></tr>
+<tr><td>BAR-F6</td><td>Bar F6</td><td>1</td><td>11.5 x 1.625 x 1.0</td><td>10.211 x 1.500 x 0.875</td><td>longitudinal-quarter</td><td></td></tr>
+<tr><td>BAR-Fs6</td><td>Bar F#6</td><td>1</td><td>11.0 x 1.625 x 1.0</td><td>9.920 x 1.500 x 0.875</td><td>longitudinal-quarter</td><td></td></tr>
+<tr><td>BAR-G6</td><td>Bar G6</td><td>1</td><td>10.5 x 1.625 x 1.0</td><td>9.638 x 1.500 x 0.875</td><td>longitudinal-quarter</td><td></td></tr>
+<tr><td>BAR-Gs6</td><td>Bar G#6</td><td>1</td><td>10.5 x 1.625 x 1.0</td><td>9.363 x 1.500 x 0.875</td><td>longitudinal-quarter</td><td></td></tr>
+<tr><td>BAR-A6</td><td>Bar A6</td><td>1</td><td>10.0 x 1.625 x 1.0</td><td>9.097 x 1.500 x 0.875</td><td>longitudinal-quarter</td><td></td></tr>
+<tr><td>BAR-As6</td><td>Bar A#6</td><td>1</td><td>9.5 x 1.625 x 1.0</td><td>8.838 x 1.500 x 0.875</td><td>longitudinal-quarter</td><td></td></tr>
+<tr><td>BAR-B6</td><td>Bar B6</td><td>1</td><td>9.5 x 1.625 x 1.0</td><td>8.586 x 1.500 x 0.875</td><td>longitudinal-quarter</td><td></td></tr>
+<tr><td>BAR-C7</td><td>Bar C7</td><td>1</td><td>9.0 x 1.625 x 1.0</td><td>8.342 x 1.500 x 0.875</td><td>longitudinal-quarter</td><td></td></tr>
+<tr><td>RAIL-L</td><td>Suspension rail left</td><td>1</td><td>22.0 x 2.5 x 1.5</td><td>21.000 x 2.250 x 1.250</td><td>longitudinal</td><td>both rails identical</td></tr>
+<tr><td>RAIL-R</td><td>Suspension rail right</td><td>1</td><td>22.0 x 2.5 x 1.5</td><td>21.000 x 2.250 x 1.250</td><td>longitudinal</td><td></td></tr>
+<tr><td>LEG-FL</td><td>Front-left leg</td><td>1</td><td>32.0 x 1.75 x 1.75</td><td>30.000 x 1.500 x 1.500</td><td>longitudinal</td><td>chamfer top edge for cord clearance</td></tr>
+<tr><td>LEG-FR</td><td>Front-right leg</td><td>1</td><td>32.0 x 1.75 x 1.75</td><td>30.000 x 1.500 x 1.500</td><td>longitudinal</td><td></td></tr>
+<tr><td>LEG-RL</td><td>Rear-left leg</td><td>1</td><td>32.0 x 1.75 x 1.75</td><td>30.000 x 1.500 x 1.500</td><td>longitudinal</td><td></td></tr>
+<tr><td>LEG-RR</td><td>Rear-right leg</td><td>1</td><td>32.0 x 1.75 x 1.75</td><td>30.000 x 1.500 x 1.500</td><td>longitudinal</td><td></td></tr>
+<tr><td>GUSSET</td><td>Corner gusset</td><td>4</td><td>7.0 x 7.0 x 0.5</td><td>6.000 x 6.000 x 0.500</td><td>plywood-9-ply</td><td>45-degree triangle gussets at leg-to-rail joint</td></tr>
+</table>
+
+<div class="page-break"></div>
+
+<h2>drawing-brief.md</h2>
+
+<p>Manufacturing drawing and technical product sketch brief.</p>
+
+<h1>Xylophone — Drawing Brief</h1>
+
+<p>What the SVG and CAD drawings need to show, in priority order. The</p>
+<p>drawings live in `drawings/` (per-family-member SVGs and a frame</p>
+<p>elevation/plan); the CAD master lives in `cad/` once built.</p>
+
+<h2>DR-01: Bar template (parametric)</h2>
+
+<p>A single dimensioned drawing template that varies per family member.</p>
+<p>**Critical dimensions:**</p>
+
+<ul>
+<li>Bar length `L` (from `family-spec.csv` per note).</li>
+<li>Bar width `W = 1.500&quot;`.</li>
+<li>Bar thickness `h = 0.875&quot;` (section view).</li>
+<li>Node-hole positions: low-side at `0.224 × L`, high-side at</li>
+</ul>
+<p>  `0.776 × L`. Hole diameter `1/8&quot;`.</p>
+<ul>
+<li>Strike line at center (`L/2`) — annotation only, not a feature.</li>
+<li>Edge round-over `1/16&quot;` on all four long edges.</li>
+</ul>
+
+<p>Title block must show: drawing ID, note name, family `XYL`, scale</p>
+<p>(1:2 reads cleanly for the long bars), revision, date, designer,</p>
+<p>material, finish.</p>
+
+<p>The drawing template&#x27;s only variable is `L` and the two derived hole</p>
+<p>positions. A generator should be able to produce 25 SVGs from the</p>
+<p>family table by string substitution alone.</p>
+
+<h2>DR-02: Frame elevation</h2>
+
+<p>Side view of the assembled frame (no bars). Shows:</p>
+
+<ul>
+<li>Two suspension rails, `21.000&quot; × 2.250&quot; × 1.250&quot;`, mounted on top</li>
+</ul>
+<p>  of the legs.</p>
+<ul>
+<li>Four legs, `30.000&quot; × 1.500&quot; × 1.500&quot;`. Chamfered top edge.</li>
+<li>Corner gussets, `6.000 × 6.000 × 0.500&quot;` plywood, on the inside</li>
+</ul>
+<p>  face of each leg-rail joint.</p>
+<ul>
+<li>Cord-suspension geometry — schematic, not dimensioned.</li>
+<li>Overall envelope: 21&quot; wide, 30&quot; tall.</li>
+</ul>
+
+<h2>DR-03: Frame plan</h2>
+
+<p>Top view of the frame with bars laid in suspension. Shows:</p>
+
+<ul>
+<li>Both rails parallel, 6.5&quot; inside-to-inside.</li>
+<li>25 bar positions in the family-table order, lowest at the left.</li>
+<li>Inter-bar gap: 0.250&quot; minimum.</li>
+<li>Total bar-array length: ~17&quot; (driven by the longest bar plus</li>
+</ul>
+<p>  gaps).</p>
+<ul>
+<li>Cord routing: alternating side-to-side through node holes.</li>
+</ul>
+
+<h2>DR-04: Mallet detail</h2>
+
+<p>Three-view of the recommended hard-rubber mallet (from `bom.csv`).</p>
+<p>Shaft length, head diameter, head shape. **Reference only** — the</p>
+<p>mallets are purchased, not built. Goes on the visual BOM, not in</p>
+<p>the build instructions.</p>
+
+<h2>Style notes</h2>
+
+<ul>
+<li>All dimensions in inches. Decimal, three places (`16.683`),</li>
+</ul>
+<p>  consistent with `family-spec.csv` and `cut-list.csv`.</p>
+<ul>
+<li>Datum chain: bar drawings reference left bar end; frame drawings</li>
+</ul>
+<p>  reference left-rear leg base.</p>
+<ul>
+<li>Tolerances: bars ±1/64&quot;, frame ±1/32&quot; (frame loose on purpose —</li>
+</ul>
+<p>  bars do the precision work).</p>
+<ul>
+<li>File names: `drawings/DR-01-bar-&lt;note&gt;.svg` per bar (or a single</li>
+</ul>
+<p>  `drawings/template.svg` until the per-bar instances are</p>
+<p>  generated). Frame drawings: `drawings/DR-02-frame-elevation.svg`,</p>
+<p>  `drawings/DR-03-frame-plan.svg`. Mallet: `drawings/DR-04-mallet.svg`.</p>
+
+<h2>Generator hookup</h2>
+
+<p>A future invocation of `scripts/generate_drawings.py` against this</p>
+<p>packet will populate `drawings/DR-01-bar-*.svg` from `family-spec.csv`.</p>
+<p>Until that runs, `drawings/template.svg` is the placeholder showing</p>
+<p>the title-block layout and the datum chain so the generator&#x27;s output</p>
+<p>matches in style.</p>
+
+<div class="page-break"></div>
+
+<h2>assembly-manual.md</h2>
+
+<p>Shop-facing sequence, tools, fixtures, safety, tuning, finishing, and maintenance notes.</p>
+
+<h1>Xylophone — Assembly Manual</h1>
+
+<p>14 shop steps, in order. Checkboxes are blank for shop use; tick them</p>
+<p>off as you go. Estimated total bench time: **3 working days** with</p>
+<p>overnight glue cures.</p>
+
+<h2>Materials and tools required</h2>
+
+<p>Read `bom.csv` and `sourcing.csv` end-to-end before starting. The</p>
+<p>critical-path items: Padauk bar stock at 6–8% MC, Korg OT-120 tuner,</p>
+<p>1/8&quot; brad-point bit, Titebond III, tung oil, and the two jigs from</p>
+<p>`jig-decision.md` (node-hole drilling jig, end-shaving sled).</p>
+
+<h2>Step 1 — Verify moisture content</h2>
+
+<ul>
+<li>[ ] Pin-meter the Padauk bar stock at three points along each</li>
+</ul>
+<p>  board. Target 6.0–8.0% MC.</p>
+<ul>
+<li>[ ] Log temp + RH in the shop in `validation.csv` row V1.</li>
+<li>[ ] If MC &gt; 8%: stack with stickers in the shop for two weeks and</li>
+</ul>
+<p>  remeasure. **Do not proceed until MC is 6–8%.**</p>
+
+<h2>Step 2 — Mill blanks to rough cut-list dimensions</h2>
+
+<ul>
+<li>[ ] Cross-cut each bar blank to its `rough_dimensions_in[0]` length</li>
+</ul>
+<p>  (per `cut-list.csv`). Add 1&quot; to the longest blanks for safety.</p>
+<ul>
+<li>[ ] Rip to 1.625&quot; rough width.</li>
+<li>[ ] Joint one face and one edge.</li>
+<li>[ ] Plane to 1.0&quot; rough thickness.</li>
+</ul>
+
+<h2>Step 3 — Final mill bars</h2>
+
+<ul>
+<li>[ ] Plane to **0.875&quot;** final thickness.</li>
+<li>[ ] Rip to **1.500&quot;** final width.</li>
+<li>[ ] Cross-cut to the `final_dimensions_in[0]` length per</li>
+</ul>
+<p>  `cut-list.csv`. **Cut long by 1/16&quot;** — final length is set in</p>
+<p>  the tuning step.</p>
+
+<h2>Step 4 — Surface prep</h2>
+
+<ul>
+<li>[ ] Drum-sand or hand-sand each bar 80 → 120 → 180 → 220.</li>
+<li>[ ] Ease all four long edges with a 1/16&quot; round-over.</li>
+<li>[ ] Mark each bar&#x27;s note name on the underside in pencil.</li>
+</ul>
+
+<h2>Step 5 — Drill node holes (jig)</h2>
+
+<ul>
+<li>[ ] Set up the node-hole drilling jig from `jig-decision.md`.</li>
+<li>[ ] For each bar: set both flip-stops to the bar&#x27;s</li>
+</ul>
+<p>  `hole_pos_low_in` and `hole_pos_high_in` from `family-spec.csv`.</p>
+<ul>
+<li>[ ] Drill the low-side hole, flip stops, drill the high-side hole.</li>
+<li>[ ] Chamfer both holes ~0.5mm with a countersink to prevent cord</li>
+</ul>
+<p>  chafing.</p>
+
+<h2>Step 6 — First measurement</h2>
+
+<ul>
+<li>[ ] Suspend each bar from a piece of test-cord through both node</li>
+</ul>
+<p>  holes.</p>
+<ul>
+<li>[ ] Strike with the hard rubber mallet, measure with the Korg</li>
+</ul>
+<p>  OT-120.</p>
+<ul>
+<li>[ ] Log result for each bar in `validation.csv` row V2.</li>
+<li>[ ] **Expected outcome:** bars read 5–25 cents *low* of target.</li>
+</ul>
+<p>  This is normal — final length is shaved in the next step.</p>
+
+<h2>Step 7 — Tune by end-shaving</h2>
+
+<ul>
+<li>[ ] On the end-shaving sled: shave equal amounts from each bar end</li>
+</ul>
+<p>  in 1/64&quot; increments. Symmetric shaving keeps the node positions</p>
+<p>  centered.</p>
+<ul>
+<li>[ ] After each pass, re-suspend, re-strike, re-measure. Stop when</li>
+</ul>
+<p>  cents-actual is within ±2 cents of target.</p>
+<ul>
+<li>[ ] Log result in `validation.csv` row V3.</li>
+<li>[ ] If a bar overshoots (reads sharp): **do not add material**.</li>
+</ul>
+<p>  Either accept the +cents or scrap the bar.</p>
+
+<h2>Step 8 — Mill frame parts</h2>
+
+<ul>
+<li>[ ] Mill the two suspension rails to `21.000 × 2.250 × 1.250&quot;`.</li>
+<li>[ ] Mill four legs to `30.000 × 1.500 × 1.500&quot;`. Chamfer the top</li>
+</ul>
+<p>  edge of each leg to clear the suspension cord.</p>
+<ul>
+<li>[ ] Cut four corner gussets from 1/2&quot; Baltic birch plywood at</li>
+</ul>
+<p>  `6.000 × 6.000&quot;`, hypotenuse to hypotenuse (i.e., 45-degree</p>
+<p>  triangles).</p>
+
+<h2>Step 9 — Frame dry-fit</h2>
+
+<ul>
+<li>[ ] Dry-assemble the frame: legs into rails via the gussets.</li>
+<li>[ ] Verify rail-to-rail spacing is 6.5&quot; inside-to-inside (matches</li>
+</ul>
+<p>  the bar width plus suspension margin).</p>
+<ul>
+<li>[ ] Verify legs are square to rails.</li>
+</ul>
+
+<h2>Step 10 — Frame glue-up</h2>
+
+<ul>
+<li>[ ] Apply Titebond III to all gusset-to-frame joints.</li>
+<li>[ ] Drive #10 × 2&quot; wood screws through pilot holes (Padauk and</li>
+</ul>
+<p>  hard maple both want pilots).</p>
+<ul>
+<li>[ ] Clamp 24 hours. Do not flex the frame during cure.</li>
+</ul>
+
+<h2>Step 11 — Apply finish</h2>
+
+<ul>
+<li>[ ] Wipe each bar with mineral spirits to remove sanding dust.</li>
+<li>[ ] Apply pure tung oil with a lint-free rag, three coats. Each</li>
+</ul>
+<p>  coat dries 24 hours; sand lightly between coats with 320.</p>
+<ul>
+<li>[ ] Apply finish to the frame the same way (two coats is enough).</li>
+<li>[ ] **24 hours after the last bar coat:** re-measure each bar.</li>
+</ul>
+<p>  Log in `validation.csv` row V4. Expected drift: −2 to −4 cents</p>
+<p>  from finish mass loading. If drift exceeds −5 cents, end-shave</p>
+<p>  again to compensate.</p>
+
+<h2>Step 12 — Top-coat and cure</h2>
+
+<ul>
+<li>[ ] Apply beeswax paste over the cured tung oil; buff out.</li>
+<li>[ ] Allow seven days at shop ambient before play-testing.</li>
+</ul>
+
+<h2>Step 13 — Suspend bars</h2>
+
+<ul>
+<li>[ ] Cut paracord to length: rail length × 2 + 12&quot; tail per rail.</li>
+<li>[ ] Tie a stopper knot at each rail end.</li>
+<li>[ ] Thread cord through node holes in C5–C7 order, alternating</li>
+</ul>
+<p>  bar-to-cord-to-bar.</p>
+<ul>
+<li>[ ] Terminate at the second rail with brass finish washers and a</li>
+</ul>
+<p>  tied loop.</p>
+
+<h2>Step 14 — Final validation</h2>
+
+<ul>
+<li>[ ] Photograph the finished assembly per `photo-shotlist.md`</li>
+</ul>
+<p>  shots 1, 2, 4, 5, 6, 7, 10.</p>
+<ul>
+<li>[ ] Run validation row V8 (full-octave evenness): measure C5, C6,</li>
+</ul>
+<p>  C7 in one session. Document spread.</p>
+<ul>
+<li>[ ] Schedule validation rows V6 (30-day) and V7 (60-day) on the</li>
+</ul>
+<p>  shop calendar.</p>
+<ul>
+<li>[ ] Mark this packet as `built` in the master catalog.</li>
+</ul>
+
+<div class="page-break"></div>
+
+<h2>validation.csv</h2>
+
+<p>Target/measured values, tolerance, environment, result, and tuning/build action log.</p>
+
+<table>
+<tr><th>row_id</th><th>note_id</th><th>phase</th><th>target_hz</th><th>measured_hz</th><th>cents_target</th><th>cents_actual</th><th>tuner_make_model</th><th>temp_F</th><th>humidity_RH_percent</th><th>environment_notes</th><th>date</th><th>result</th></tr>
+<tr><td>V1</td><td>ALL</td><td>prediction-paper</td><td>per family-spec</td><td></td><td>0</td><td></td><td>N/A</td><td>68</td><td>45</td><td>design table, pre-cut</td><td></td><td>first-order Euler-Bernoulli prediction; logged from family-spec.csv</td></tr>
+<tr><td>V2</td><td>A5</td><td>post-cut</td><td>880.00</td><td></td><td>0</td><td></td><td>Korg OT-120</td><td>68</td><td>45</td><td>shop bench, immediately after surface plane</td><td></td><td>first measurement; expected to read low if length over rough</td></tr>
+<tr><td>V3</td><td>A5</td><td>post-shave</td><td>880.00</td><td></td><td>0</td><td></td><td>Korg OT-120</td><td>68</td><td>45</td><td>shop bench, after end-shaving for fundamental</td><td></td><td>shave 1/64 in increments; recheck</td></tr>
+<tr><td>V4</td><td>A5</td><td>post-finish</td><td>880.00</td><td></td><td>-3 to 0</td><td></td><td>Korg OT-120</td><td>68</td><td>45</td><td>shop bench, 24 hours after final tung-oil coat</td><td></td><td>finish adds mass; expected drift -2 to -4 cents</td></tr>
+<tr><td>V5</td><td>A5</td><td>post-resonator-install</td><td>880.00</td><td></td><td>0</td><td></td><td>Korg OT-120</td><td>68</td><td>45</td><td>shop, with resonator tube installed at quarter-wave length</td><td></td><td>deferred to v2 build</td></tr>
+<tr><td>V6</td><td>ALL</td><td>30-day-moisture</td><td>per family-spec</td><td></td><td>within +/-5</td><td></td><td>Korg OT-120</td><td>TBD</td><td>TBD</td><td>30 days post-finish; log temp and RH</td><td></td><td>retune any bar drifting beyond +/-5 cents</td></tr>
+<tr><td>V7</td><td>ALL</td><td>60-day-moisture</td><td>per family-spec</td><td></td><td>within +/-5</td><td></td><td>Korg OT-120</td><td>TBD</td><td>TBD</td><td>60 days post-finish; log temp and RH</td><td></td><td>second moisture check; if stable retire moisture rows</td></tr>
+<tr><td>V8</td><td>C5-C6-C7</td><td>full-octave-evenness</td><td>523.25, 1046.50, 2093.00</td><td></td><td>within +/-5 across the three Cs</td><td></td><td>Korg OT-120</td><td>68</td><td>45</td><td>all three Cs measured in one session for evenness</td><td></td><td>if greater than 10 cents spread, escalate to design review</td></tr>
+</table>
+
+<div class="page-break"></div>
+
+<h2>supplier-rfq.md</h2>
+
+<p>Supplier email/request-for-quote starter.</p>
+
+<h1>Xylophone — Supplier RFQ</h1>
+
+<p>Template — paste into supplier email or web form. The bar-stock RFQ</p>
+<p>is the only critical-path RFQ; everything else is COTS from</p>
+<p>`sourcing.csv` and does not need a custom quote.</p>
+
+<p>---</p>
+
+<p>**Subject:** Padauk bar-stock quote — 25-bar xylophone build</p>
+
+<p>Hello,</p>
+
+<p>I&#x27;m building a 25-bar chromatic xylophone (C5–C7) and I&#x27;d like a</p>
+<p>quote on Padauk lumber for the bar set. Specs:</p>
+
+<ul>
+<li>**Species:** African Padauk (*Pterocarpus soyauxii*) — *not*</li>
+</ul>
+<p>  Burma Padauk.</p>
+<ul>
+<li>**Form:** 4/4 lumber (15/16&quot; rough, surfaced 4 sides to roughly</li>
+</ul>
+<p>  3/4&quot;–7/8&quot; final), or fall-back to S2S if S4S is unavailable.</p>
+<ul>
+<li>**Grain:** **Quartersawn** strongly preferred (radial grain on the</li>
+</ul>
+<p>  bar face). Riftsawn acceptable on 25–35% of the order. Flatsawn</p>
+<p>  rejected — bars will warp.</p>
+<ul>
+<li>**Moisture content:** **Kiln-dried to 6–8% MC.** Please measure with</li>
+</ul>
+<p>  a pin meter at multiple points and confirm in writing.</p>
+<ul>
+<li>**Defect tolerance:** No knots, no shake, no end-checks longer than</li>
+</ul>
+<p>  1/2&quot;, no insect damage, no sap pockets. Color variation acceptable.</p>
+<ul>
+<li>**Total board feet:** Approximately **15 BF** to yield 25 bars</li>
+</ul>
+<p>  (longest 17&quot;, shortest 9&quot;, at 1.5&quot;×7/8&quot;) plus 20% waste.</p>
+<ul>
+<li>**Lengths preferred:** Boards in the 36–48&quot; range. Anything shorter</li>
+</ul>
+<p>  than 24&quot; is hard to use.</p>
+
+<p>Please quote:</p>
+
+<p>1. Per-board-foot price for the spec above.</p>
+<p>2. Total for 15 BF, FOB your shipping point.</p>
+<p>3. Lead time from order to ship.</p>
+<p>4. Photographs of two or three representative boards before payment</p>
+<p>   so I can confirm grain orientation and color.</p>
+
+<p>If S4S quartersawn is not available at this volume, please quote for</p>
+<p>S2S quartersawn at 5/4 thickness instead and I&#x27;ll mill to 7/8&quot; myself.</p>
+
+<p>Thanks,</p>
+<p>Tony Koop</p>
+<p>tonykoop@gmail.com</p>
+
+<p>---</p>
+
+<h2>RFQ tracking</h2>
+
+<table>
+<tr><th>Field</th><th>Value</th></tr>
+</table>
+<p>|-------------------|-----------------------------------------------|</p>
+<table>
+<tr><th>RFQ ID</th><th>XYL-RFQ-001</th></tr>
+<tr><td>Spec sheet</td><td>`bom.csv` row `BAR-STOCK`</td></tr>
+<tr><td>Sourcing options</td><td>`sourcing.csv` rows for `BAR-STOCK`</td></tr>
+<tr><td>Sent date</td><td>TBD</td></tr>
+<tr><td>Quote received</td><td>TBD</td></tr>
+<tr><td>Decision</td><td>TBD</td></tr>
+<tr><td>Order placed</td><td>TBD</td></tr>
+<tr><td>Received in shop</td><td>TBD</td></tr>
+<tr><td>MC at receipt</td><td>TBD (target 6–8%; measure on arrival)</td></tr>
+</table>
+
+<h2>Decision criteria</h2>
+
+<p>Pick the supplier whose quote yields **best (price × delivery × grade</p>
+<p>match)**. Bell Forest Products is the default expectation; West Penn</p>
+<p>and Cook are the named backups in `sourcing.csv`.</p>
+
+<h2>What to do if no supplier can deliver to spec</h2>
+
+<p>Fall-back order: switch the spec&#x27;s primary species in</p>
+<p>`xylophone-design-table.xlsx` from Padauk to Hard Maple (Tier 3 in</p>
+<p>`design.md`). Re-run the family table — predicted lengths shift</p>
+<p>slightly because Maple&#x27;s √(E/ρ) is 4229 m/s vs Padauk&#x27;s 4112. Bars</p>
+<p>end up about 1.4% longer. Update `family-spec.csv` and `cut-list.csv`</p>
+<p>accordingly.</p>
+
+<div class="page-break"></div>
+
+<h2>visual-bom-brief.md</h2>
+
+<p>Art direction for an image-forward visual BOM.</p>
+
+<h1>Xylophone — Visual BOM Brief</h1>
+
+<p>Brief for the visual BOM (the recruiter-facing assembly plate). One</p>
+<p>page, every line in `bom.csv` represented by a thumbnail and a</p>
+<p>two-line label.</p>
+
+<h2>Page layout</h2>
+
+<ul>
+<li>**Header.** Project name + version + quote date + total cost.</li>
+<li>**Hero strip** at top: `images/01-hero.jpg` (or the placeholder</li>
+</ul>
+<p>  SVG until captured), full-width.</p>
+<ul>
+<li>**Three columns** of part rows below the hero, top-to-bottom:</li>
+</ul>
+<p>  bar stock + finishing on the left, frame stock + hardware in the</p>
+<p>  middle, mallets + tuning + measurement gear on the right.</p>
+<ul>
+<li>**Footer.** Total cost, link to the GitHub repo, license note.</li>
+</ul>
+
+<h2>Part-row anatomy</h2>
+
+<p>Each row:</p>
+
+<pre><code>
+[thumbnail 60×60]  PART_ID — Part Name
+                   Qty • Unit • Estimated cost • Supplier
+                   One-line spec summary
+</code></pre>
+
+<p>Thumbnails are pulled from `images/` by part-id slug. When an image</p>
+<p>is missing, fall back to a category placeholder (a square with the</p>
+<p>part-id text centered, no decoration).</p>
+
+<h2>Mapping bom.csv → visual BOM</h2>
+
+<table>
+<tr><th>bom.csv part_id</th><th>Image slug</th><th>Notes for plate</th></tr>
+</table>
+<p>|----------------------|-------------------------------------|------------------------------------------|</p>
+<table>
+<tr><th>BAR-STOCK</th><th>`images/02-bar-fan.jpg`</th><th>top-left, biggest cell</th></tr>
+<tr><td>FRAME-RAIL</td><td>`images/04-frame-elevation.jpg`</td><td>use frame photo cropped to rails</td></tr>
+<tr><td>FRAME-LEG</td><td>`images/04-frame-elevation.jpg`</td><td>crop to legs</td></tr>
+<tr><td>FRAME-GUSSET</td><td>placeholder square</td><td>small detail, use category placeholder</td></tr>
+<tr><td>CORD-NODE</td><td>`images/06-suspension-cord.jpg`</td><td>cord visible against bars</td></tr>
+<tr><td>CORD-WASHER</td><td>placeholder square</td><td></td></tr>
+<tr><td>SCREW-FRAME</td><td>placeholder square</td><td></td></tr>
+<tr><td>GLUE-FRAME</td><td>placeholder square</td><td></td></tr>
+<tr><td>FINISH-OIL</td><td>placeholder square</td><td></td></tr>
+<tr><td>FINISH-WAX</td><td>placeholder square</td><td></td></tr>
+<tr><td>MALLET-HRD</td><td>`images/05-mallet-trio.jpg`</td><td>crop to hard-rubber mallet</td></tr>
+<tr><td>MALLET-MED</td><td>`images/05-mallet-trio.jpg`</td><td>crop to medium yarn mallet</td></tr>
+<tr><td>TUNER-CHROMA</td><td>`images/07-tuner-on-bar.jpg`</td><td>OT-120 mid-measurement</td></tr>
+<tr><td>HYGRO-SHOP</td><td>placeholder square</td><td></td></tr>
+<tr><td>MOIST-METER</td><td>`images/09-moisture-meter.jpg`</td><td>meter on Padauk end-grain</td></tr>
+<tr><td>SANDPAPER-KIT</td><td>placeholder square</td><td></td></tr>
+<tr><td>DRILL-BIT-NODE</td><td>placeholder square</td><td></td></tr>
+<tr><td>RESONATOR-TUBE</td><td>placeholder square — deferred</td><td>grey out the row; v2 build</td></tr>
+</table>
+
+<h2>Style</h2>
+
+<ul>
+<li>Black text on white background. No decorative shading.</li>
+<li>Font: Inter or system-ui. Body 9pt, headings 11pt, totals 13pt.</li>
+<li>Print target: US Letter portrait, 0.5&quot; margins. The visual BOM is</li>
+</ul>
+<p>  the one page that must be printable in a shop.</p>
+
+<h2>Output</h2>
+
+<p>The visual BOM is rendered as part of the print packet</p>
+<p>(`print-packet.html` and `print-packet.pdf`). The HTML is the</p>
+<p>source of truth; the PDF is generated from it. When optional PDF</p>
+<p>deps are missing, the HTML alone is shippable.</p>
+
+<div class="page-break"></div>
+
+<h2>wolfram-starter.wl</h2>
+
+<p>Wolfram starter for physics, optimization, visualization, and validation.</p>
+
+<pre><code>
+(* ::Package:: *)
+
+(* Xylophone — instrument-model.wl                                          *)
+(* Free-free Euler-Bernoulli flat-bar idiophone. First-mode prediction,     *)
+(* node positions, optional quarter-wave closed-pipe resonator, validation  *)
+(* plot scaffolding, audio preview.                                         *)
+(*                                                                          *)
+(* Read references/wolfram-workflow.md before extending this file.          *)
+
+(* ::Section:: *)
+(* Parameters *)
+
+(* Wood species shortlist — Padauk is the spec primary. Override by editing. *)
+woodPadauk = &lt;| &quot;name&quot; -&gt; &quot;African Padauk&quot;, &quot;EGPa&quot; -&gt; 12.6, &quot;rhoKg&quot; -&gt; 745. |&gt;;
+woodHondurasRosewood = &lt;| &quot;name&quot; -&gt; &quot;Honduras Rosewood&quot;, &quot;EGPa&quot; -&gt; 14.1, &quot;rhoKg&quot; -&gt; 1000. |&gt;;
+woodHardMaple = &lt;| &quot;name&quot; -&gt; &quot;Hard Maple&quot;, &quot;EGPa&quot; -&gt; 12.6, &quot;rhoKg&quot; -&gt; 705. |&gt;;
+
+(* Active wood — the only switch that matters at the top of the file. *)
+woodActive = woodPadauk;
+
+(* Bar geometry constants (held constant within a family in v1). *)
+barWidthIn = 1.5;
+barThickIn = 0.875;
+inToM = 0.0254;
+
+(* Resonator geometry. *)
+resonatorBoreIn = 1.5;
+soundSpeedAir = 343.0;            (* m/s at ~20 C *)
+endCorrectionFactor = 0.82;        (* per acoustic-models.md, quarter-wave closed pipe *)
+
+(* ::Section:: *)
+(* Governing model *)
+
+(* Free-free Euler-Bernoulli first mode:
+       f1 = 1.028 * (h / L^2) * Sqrt[E/rho]
+   Reference: acoustic-models.md, Free-Free Beams section.
+   First-order only — K2 and end-corrections do not apply to bar idiophones. *)
+
+soundSpeedSolid[E_, rho_] := Sqrt[(E*10.^9) / rho];
+
+f1FromGeometry[L_, h_, E_, rho_] :=
+  1.028 * (h / L^2) * soundSpeedSolid[E, rho];
+
+lengthFromTarget[fTarget_, h_, E_, rho_] :=
+  Sqrt[1.028 * h * soundSpeedSolid[E, rho] / fTarget];
+
+resonatorLength[fTarget_, boreIn_] := Module[{boreM, lM},
+  boreM = boreIn * inToM;
+  lM = soundSpeedAir / (4 * fTarget) - endCorrectionFactor * boreM;
+  lM / inToM
+];
+
+(* ::Section:: *)
+(* Family table generation *)
+
+chromaticC5toC7Notes = {
+  {&quot;C5&quot;,523.25},{&quot;C#5&quot;,554.37},{&quot;D5&quot;,587.33},{&quot;D#5&quot;,622.25},
+  {&quot;E5&quot;,659.26},{&quot;F5&quot;,698.46},{&quot;F#5&quot;,739.99},{&quot;G5&quot;,783.99},
+  {&quot;G#5&quot;,830.61},{&quot;A5&quot;,880.00},{&quot;A#5&quot;,932.33},{&quot;B5&quot;,987.77},
+  {&quot;C6&quot;,1046.50},{&quot;C#6&quot;,1108.73},{&quot;D6&quot;,1174.66},{&quot;D#6&quot;,1244.51},
+  {&quot;E6&quot;,1318.51},{&quot;F6&quot;,1396.91},{&quot;F#6&quot;,1479.98},{&quot;G6&quot;,1567.98},
+  {&quot;G#6&quot;,1661.22},{&quot;A6&quot;,1760.00},{&quot;A#6&quot;,1864.66},{&quot;B6&quot;,1975.53},
+  {&quot;C7&quot;,2093.00}
+};
+
+familyRow[note_String, fHz_?NumericQ] := Module[{Lm, Lin, holeLo, holeHi, Lres},
+  Lm  = lengthFromTarget[fHz, barThickIn * inToM, woodActive[&quot;EGPa&quot;], woodActive[&quot;rhoKg&quot;]];
+  Lin = Lm / inToM;
+  holeLo = 0.224 * Lin;
+  holeHi = 0.776 * Lin;
+  Lres   = resonatorLength[fHz, resonatorBoreIn];
+  &lt;| &quot;note&quot; -&gt; note, &quot;fHz&quot; -&gt; fHz, &quot;LIn&quot; -&gt; Lin,
+     &quot;holeLoIn&quot; -&gt; holeLo, &quot;holeHiIn&quot; -&gt; holeHi,
+     &quot;resonatorLIn&quot; -&gt; Lres |&gt;
+];
+
+familyTable := familyRow @@@ chromaticC5toC7Notes;
+
+(* ::Section:: *)
+(* Manipulate — interactive bar-length explorer *)
+
+(* The Manipulate lets you sweep wood/L/h and see f1 in real time.
+   Useful for sanity-checking first-order predictions and for showing
+   players the why-bigger-is-lower-pitched relationship.            *)
+
+manipulateBar := Manipulate[
+  With[{
+    fHz = f1FromGeometry[
+      LIn * inToM, hIn * inToM, EChoice, rhoChoice]},
+    Column[{
+      Style[
+        StringForm[&quot;f1 = `` Hz&quot;, NumberForm[fHz, {6, 2}]],
+        Bold, 18],
+      Plot[
+        f1FromGeometry[L * inToM, hIn * inToM, EChoice, rhoChoice],
+        {L, 4, 24}, AxesLabel -&gt; {&quot;L (in)&quot;, &quot;f1 (Hz)&quot;},
+        PlotRange -&gt; {0, 3000},
+        GridLines -&gt; {{LIn}, {fHz}}
+      ]
+    }]],
+  {{LIn, 12.0, &quot;bar length L (in)&quot;}, 4.0, 24.0, 0.05},
+  {{hIn, 0.875, &quot;bar thickness h (in)&quot;}, 0.5, 1.5, 0.01},
+  {{EChoice, 12.6, &quot;Young&#x27;s modulus E (GPa)&quot;}, 8.0, 16.0, 0.1},
+  {{rhoChoice, 745.0, &quot;density rho (kg/m^3)&quot;}, 600.0, 1100.0, 5.0},
+  ControlPlacement -&gt; Top
+];
+
+(* ::Section:: *)
+(* Audio preview *)
+
+(* Synthesizes a 0.6-second pluck of the predicted fundamental for each
+   note in the chromatic table. First-order only — not the actual modal
+   spectrum of a real bar, just a confirmation of the predicted f1.   *)
+
+audioForNote[fHz_?NumericQ] :=
+  AudioPad[
+    Sound[SoundNote[None, 0.0]] /. _ -&gt;
+      AudioGenerator[&quot;Sin&quot;, 0.6, &quot;Frequency&quot; -&gt; fHz, SampleRate -&gt; 44100],
+    {0, 0.05}
+  ];
+
+playFamily := AudioJoin @@ (audioForNote[#[[2]]] &amp; /@ chromaticC5toC7Notes);
+
+(* ::Section:: *)
+(* Validation plot scaffold *)
+
+(* Compare predicted f1 (column 1) to measured Hz (column 2) once the
+   shop log fills in. Until measurements exist, the plot just shows
+   the predicted line and a residual band. Wire to validation.csv via
+   record_measurement.py.                                              *)
+
+predictedVsMeasuredPlot[predicted_List, measured_List] :=
+  ListPlot[
+    {predicted, measured},
+    PlotStyle -&gt; {{Thick, Blue}, {PointSize[0.012], Red}},
+    PlotLegends -&gt; {&quot;predicted&quot;, &quot;measured&quot;},
+    AxesLabel -&gt; {&quot;note index (low → high)&quot;, &quot;f1 (Hz)&quot;},
+    PlotRange -&gt; All,
+    GridLines -&gt; Automatic
+  ];
+
+centsErrorPlot[predicted_List, measured_List] :=
+  ListPlot[
+    1200. * Log[2., measured / predicted],
+    Filling -&gt; Axis,
+    PlotRange -&gt; {-30, 30},
+    AxesLabel -&gt; {&quot;note index&quot;, &quot;cents error (measured − predicted)&quot;},
+    GridLines -&gt; {None, {-5, 0, 5}}
+  ];
+
+(* ::Section:: *)
+(* Document entry point *)
+
+(* CreateDocument call lives in the notebook layer, not here. Open this
+   .wl in Wolfram Desktop, evaluate manipulateBar, then evaluate
+   playFamily to hear the predicted family.                             *)
+
+(* End of file *)
+</code></pre>
+
+<div class="page-break"></div>
+
+<h2>README.md</h2>
+
+<p>Project artifact.</p>
+
+<h1>Xylophone</h1>
+
+<p>![Xylophone hero — 25-bar chromatic in Padauk on a parametric trestle frame (placeholder)](images/xylophone-hero-placeholder.svg)</p>
+
+<p>A 25-bar chromatic xylophone, **C5 to C7**, in African Padauk on a</p>
+<p>parametric trestle frame. Free-free flat-bar geometry, 12th-overtone</p>
+<p>tuning convention, optional quarter-wave closed-pipe resonators</p>
+<p>(deferred to v2). This repo is a v4.3 root-mode build packet from the</p>
+<p>[`tonykoop/instrument-maker`](https://github.com/tonykoop/instrument-maker)</p>
+<p>catalogue, designed deliberately as the *simpler sibling* of a future</p>
+<p>`tonykoop/marimba` repo.</p>
+
+<h2>Background</h2>
+
+<p>The xylophone is the higher-pitched cousin of the marimba: same</p>
+<p>physics (free-free Euler-Bernoulli transverse beam vibration), harder</p>
+<p>mallets, shorter bars, and a different second-mode tuning convention.</p>
+<p>This packet ships the bar physics, the wood-species shortlist, the</p>
+<p>suspension geometry, the validation workflow, and the build process</p>
+<p>end-to-end. It deliberately *defers* the things that make a marimba</p>
+<p>hard — the parabolic arch undercut, the mandatory tuned resonators,</p>
+<p>the multi-octave frame — so the xylophone build is feasible in one</p>
+<p>shop session and so the marimba follow-on can inherit a clean</p>
+<p>scaffold rather than starting from scratch.</p>
+
+<p>The root-of-truth design table is `xylophone-design-table.xlsx` at</p>
+<p>the repo root. Every length, hole position, and resonator length in</p>
+<p>`family-spec.csv` is solved from the parametric inputs there.</p>
+
+<h2>Design overview</h2>
+
+<ul>
+<li>**Family:** 25 bars, C5 (523.25 Hz) through C7 (2093.00 Hz), chromatic.</li>
+<li>**Bar geometry:** flat-bottom rectangular, **1.500&quot; × 0.875&quot; cross</li>
+</ul>
+<p>  section** held constant across the family. Length varies per note;</p>
+<p>  see [`family-spec.csv`](family-spec.csv).</p>
+<ul>
+<li>**Wood:** **African Padauk** (sustainable, predictable acoustic</li>
+</ul>
+<p>  properties, available in 4/4 quartersawn). Honduras Rosewood and</p>
+<p>  Hard Maple are documented swap-ins.</p>
+<ul>
+<li>**Suspension:** 1/8&quot; paracord through node holes drilled at 22.4%</li>
+</ul>
+<p>  and 77.6% of bar length — the first free-free mode&#x27;s nodes.</p>
+<ul>
+<li>**Tuning:** 12th-overtone convention noted as a *measurement</li>
+</ul>
+<p>  target* on the validation sheet, not a CAD geometry. End-shaving</p>
+<p>  is the production tuning method (no arch undercut — that&#x27;s marimba).</p>
+<ul>
+<li>**Frame:** parametric 4-leg trestle, 21&quot; wide × 30&quot; tall, hard</li>
+</ul>
+<p>  maple rails and legs with Baltic-birch corner gussets.</p>
+<ul>
+<li>**Resonators:** computed but optional. The L-per-note math is in</li>
+</ul>
+<p>  `family-spec.csv` so adding resonators in v2 is additive.</p>
+
+<h2>Family-table preview (first and last)</h2>
+
+<table>
+<tr><th>Note</th><th>Target Hz</th><th>Bar L (in)</th><th>Hole low (in)</th><th>Hole high (in)</th><th>Resonator L (in)</th><th>Mass (oz)</th></tr>
+</table>
+<p>|------|-----------|------------|---------------|----------------|------------------|-----------|</p>
+<table>
+<tr><th>C5</th><th>523.25</th><th>16.683</th><th>3.737</th><th>12.946</th><th>5.22</th><th>9.43</th></tr>
+<tr><td>A4 *</td><td>440.00</td><td>n/a</td><td>n/a</td><td>n/a</td><td>n/a</td><td>n/a</td></tr>
+<tr><td>A5</td><td>880.00</td><td>12.865</td><td>2.882</td><td>9.983</td><td>2.61</td><td>7.27</td></tr>
+<tr><td>C7</td><td>2093.00</td><td>8.342</td><td>1.869</td><td>6.473</td><td>0.38</td><td>4.71</td></tr>
+</table>
+
+<p>\* A4 = 440 Hz is the standard tuning reference; the family ranges</p>
+<p>from C5 upward, so A4 itself is not a member.</p>
+
+<p>Full table: [`family-spec.csv`](family-spec.csv).</p>
+
+<h2>Why this packet exists</h2>
+
+<p>This is the v4.3 challenge run for the</p>
+<p>[`instrument-maker-v4`](https://github.com/tonykoop/instrument-maker)</p>
+<p>skill, exercising the **root-mode** packet contract end-to-end on a</p>
+<p>new wooden-idiophone family. Specifically:</p>
+
+<p>1. Validates the v4.3 root-mode validator (`validate_packet.py</p>
+<p>   --mode root`) against a fresh Mode A repo.</p>
+<p>2. Demonstrates the bar-idiophone branch of `acoustic-models.md`&#x27;s</p>
+<p>   Free-Free Beams section with first-order honesty about K2 and</p>
+<p>   end-correction guard rules.</p>
+<p>3. Builds the design template that the marimba sister repo will</p>
+<p>   inherit — every &quot;marimba-equivalent: …&quot; callout in</p>
+<p>   [`design.md`](design.md) is a hook for the marimba build.</p>
+
+<h2>Sister repos and references</h2>
+
+<ul>
+<li>[`tonykoop/instrument-maker`](https://github.com/tonykoop/instrument-maker)</li>
+</ul>
+<p>  — parent catalogue, the v4 skill source, references and scripts.</p>
+<ul>
+<li>[`tonykoop/tongue-drum`](https://github.com/tonykoop/tongue-drum) —</li>
+</ul>
+<p>  closest sister repo: another wooden idiophone, free-free / cantilever</p>
+<p>  beam math, SolidWorks master-layout convention, magazine-baseline</p>
+<p>  attribution. The xylophone README borrows its structure.</p>
+<ul>
+<li>`tonykoop/marimba` *(planned)* — the natural follow-on; this</li>
+</ul>
+<p>  packet&#x27;s `design.md` calls out exactly what each marimba decision</p>
+<p>  has to swap in (`Marimba-Equivalent Hooks` table).</p>
+
+<h2>Repo layout</h2>
+
+<pre><code>
+xylophone/
+├── README.md                     ← this file
+├── design.md                     ← governing model, family plan, decisions
+├── family-spec.csv               ← parametric per-note table (25 rows)
+├── bom.csv, sourcing.csv         ← parts and supplier candidates
+├── cut-list.csv                  ← shop cut list (bars + frame)
+├── validation.csv                ← measured-tuning workflow (8 rows)
+├── assembly-manual.md            ← 14-step shop manual
+├── supplier-rfq.md               ← bar-stock RFQ template
+├── drawing-brief.md              ← what the SVG drawings must show
+├── visual-bom-brief.md           ← printable visual BOM brief
+├── wolfram-starter.wl            ← parametric Wolfram source
+├── risks.md                      ← red-team risk register
+├── resources.md                  ← citations and references
+├── jig-decision.md               ← three jig build/no-build calls
+├── photo-shotlist.md             ← ten-shot photo plan
+├── capstone-deck.md / .pptx      ← recruiter-facing slide deck
+├── print-packet.md / .html / .pdf ← shop-printable packet
+├── capstone-manifest.json        ← deck-and-packet manifest
+├── xylophone-design-table.xlsx   ← parametric source of truth
+├── images/                       ← hero, build photos
+├── drawings/                     ← per-bar SVGs + frame elevation/plan
+├── cad/                          ← SolidWorks master (deferred)
+├── cnc/                          ← cnc-plan.json + setup-sheet.md
+├── jigs/                         ← jig sketches (deferred)
+└── site/                         ← static build-log site
+</code></pre>
+
+<h2>License</h2>
+
+<p>[CC BY 4.0](LICENSE) — see LICENSE for details.</p>
+
+<div class="page-break"></div>
+
+<h2>family-spec.csv</h2>
+
+<p>Project artifact.</p>
+
+<table>
+<tr><th>note</th><th>target_hz</th><th>bar_length_in</th><th>bar_width_in</th><th>bar_thickness_in</th><th>hole_pos_low_in</th><th>hole_pos_high_in</th><th>predicted_f1_hz</th><th>predicted_f1_source</th><th>wood_species</th><th>resonator_l_in_optional</th><th>mass_oz_est</th><th>notes</th></tr>
+<tr><td>C5</td><td>523.25</td><td>16.683</td><td>1.500</td><td>0.875</td><td>3.737</td><td>12.946</td><td>523.25</td><td>free-free Euler-Bernoulli f1=1.028(h/L^2)sqrt(E/rho); first-order; Padauk E=12.6GPa rho=745kg/m3</td><td>Padauk</td><td>5.22</td><td>9.43</td><td>solved L from target_hz</td></tr>
+<tr><td>C#5</td><td>554.37</td><td>16.208</td><td>1.500</td><td>0.875</td><td>3.631</td><td>12.578</td><td>554.37</td><td>free-free Euler-Bernoulli f1=1.028(h/L^2)sqrt(E/rho); first-order; Padauk E=12.6GPa rho=745kg/m3</td><td>Padauk</td><td>4.86</td><td>9.16</td><td>solved L from target_hz</td></tr>
+<tr><td>D5</td><td>587.33</td><td>15.747</td><td>1.500</td><td>0.875</td><td>3.527</td><td>12.220</td><td>587.33</td><td>free-free Euler-Bernoulli f1=1.028(h/L^2)sqrt(E/rho); first-order; Padauk E=12.6GPa rho=745kg/m3</td><td>Padauk</td><td>4.52</td><td>8.90</td><td>solved L from target_hz</td></tr>
+<tr><td>D#5</td><td>622.25</td><td>15.299</td><td>1.500</td><td>0.875</td><td>3.427</td><td>11.872</td><td>622.25</td><td>free-free Euler-Bernoulli f1=1.028(h/L^2)sqrt(E/rho); first-order; Padauk E=12.6GPa rho=745kg/m3</td><td>Padauk</td><td>4.20</td><td>8.65</td><td>solved L from target_hz</td></tr>
+<tr><td>E5</td><td>659.26</td><td>14.863</td><td>1.500</td><td>0.875</td><td>3.329</td><td>11.534</td><td>659.26</td><td>free-free Euler-Bernoulli f1=1.028(h/L^2)sqrt(E/rho); first-order; Padauk E=12.6GPa rho=745kg/m3</td><td>Padauk</td><td>3.89</td><td>8.40</td><td>solved L from target_hz</td></tr>
+<tr><td>F5</td><td>698.46</td><td>14.440</td><td>1.500</td><td>0.875</td><td>3.235</td><td>11.205</td><td>698.46</td><td>free-free Euler-Bernoulli f1=1.028(h/L^2)sqrt(E/rho); first-order; Padauk E=12.6GPa rho=745kg/m3</td><td>Padauk</td><td>3.60</td><td>8.16</td><td>solved L from target_hz</td></tr>
+<tr><td>F#5</td><td>739.99</td><td>14.029</td><td>1.500</td><td>0.875</td><td>3.142</td><td>10.886</td><td>739.99</td><td>free-free Euler-Bernoulli f1=1.028(h/L^2)sqrt(E/rho); first-order; Padauk E=12.6GPa rho=745kg/m3</td><td>Padauk</td><td>3.33</td><td>7.93</td><td>solved L from target_hz</td></tr>
+<tr><td>G5</td><td>783.99</td><td>13.630</td><td>1.500</td><td>0.875</td><td>3.053</td><td>10.577</td><td>783.99</td><td>free-free Euler-Bernoulli f1=1.028(h/L^2)sqrt(E/rho); first-order; Padauk E=12.6GPa rho=745kg/m3</td><td>Padauk</td><td>3.08</td><td>7.70</td><td>solved L from target_hz</td></tr>
+<tr><td>G#5</td><td>830.61</td><td>13.242</td><td>1.500</td><td>0.875</td><td>2.966</td><td>10.275</td><td>830.61</td><td>free-free Euler-Bernoulli f1=1.028(h/L^2)sqrt(E/rho); first-order; Padauk E=12.6GPa rho=745kg/m3</td><td>Padauk</td><td>2.83</td><td>7.48</td><td>solved L from target_hz</td></tr>
+<tr><td>A5</td><td>880.00</td><td>12.865</td><td>1.500</td><td>0.875</td><td>2.882</td><td>9.983</td><td>880.00</td><td>free-free Euler-Bernoulli f1=1.028(h/L^2)sqrt(E/rho); first-order; Padauk E=12.6GPa rho=745kg/m3</td><td>Padauk</td><td>2.61</td><td>7.27</td><td>solved L from target_hz</td></tr>
+<tr><td>A#5</td><td>932.33</td><td>12.498</td><td>1.500</td><td>0.875</td><td>2.800</td><td>9.699</td><td>932.33</td><td>free-free Euler-Bernoulli f1=1.028(h/L^2)sqrt(E/rho); first-order; Padauk E=12.6GPa rho=745kg/m3</td><td>Padauk</td><td>2.39</td><td>7.06</td><td>solved L from target_hz</td></tr>
+<tr><td>B5</td><td>987.77</td><td>12.143</td><td>1.500</td><td>0.875</td><td>2.720</td><td>9.423</td><td>987.77</td><td>free-free Euler-Bernoulli f1=1.028(h/L^2)sqrt(E/rho); first-order; Padauk E=12.6GPa rho=745kg/m3</td><td>Padauk</td><td>2.19</td><td>6.86</td><td>solved L from target_hz</td></tr>
+<tr><td>C6</td><td>1046.50</td><td>11.797</td><td>1.500</td><td>0.875</td><td>2.643</td><td>9.154</td><td>1046.50</td><td>free-free Euler-Bernoulli f1=1.028(h/L^2)sqrt(E/rho); first-order; Padauk E=12.6GPa rho=745kg/m3</td><td>Padauk</td><td>2.00</td><td>6.67</td><td>solved L from target_hz</td></tr>
+<tr><td>C#6</td><td>1108.73</td><td>11.461</td><td>1.500</td><td>0.875</td><td>2.567</td><td>8.894</td><td>1108.73</td><td>free-free Euler-Bernoulli f1=1.028(h/L^2)sqrt(E/rho); first-order; Padauk E=12.6GPa rho=745kg/m3</td><td>Padauk</td><td>1.81</td><td>6.48</td><td>solved L from target_hz</td></tr>
+<tr><td>D6</td><td>1174.66</td><td>11.135</td><td>1.500</td><td>0.875</td><td>2.494</td><td>8.641</td><td>1174.66</td><td>free-free Euler-Bernoulli f1=1.028(h/L^2)sqrt(E/rho); first-order; Padauk E=12.6GPa rho=745kg/m3</td><td>Padauk</td><td>1.64</td><td>6.29</td><td>solved L from target_hz</td></tr>
+<tr><td>D#6</td><td>1244.51</td><td>10.818</td><td>1.500</td><td>0.875</td><td>2.423</td><td>8.395</td><td>1244.51</td><td>free-free Euler-Bernoulli f1=1.028(h/L^2)sqrt(E/rho); first-order; Padauk E=12.6GPa rho=745kg/m3</td><td>Padauk</td><td>1.48</td><td>6.11</td><td>solved L from target_hz</td></tr>
+<tr><td>E6</td><td>1318.51</td><td>10.510</td><td>1.500</td><td>0.875</td><td>2.354</td><td>8.156</td><td>1318.51</td><td>free-free Euler-Bernoulli f1=1.028(h/L^2)sqrt(E/rho); first-order; Padauk E=12.6GPa rho=745kg/m3</td><td>Padauk</td><td>1.33</td><td>5.94</td><td>solved L from target_hz</td></tr>
+<tr><td>F6</td><td>1396.91</td><td>10.211</td><td>1.500</td><td>0.875</td><td>2.287</td><td>7.923</td><td>1396.91</td><td>free-free Euler-Bernoulli f1=1.028(h/L^2)sqrt(E/rho); first-order; Padauk E=12.6GPa rho=745kg/m3</td><td>Padauk</td><td>1.19</td><td>5.77</td><td>solved L from target_hz</td></tr>
+<tr><td>F#6</td><td>1479.98</td><td>9.920</td><td>1.500</td><td>0.875</td><td>2.222</td><td>7.698</td><td>1479.98</td><td>free-free Euler-Bernoulli f1=1.028(h/L^2)sqrt(E/rho); first-order; Padauk E=12.6GPa rho=745kg/m3</td><td>Padauk</td><td>1.05</td><td>5.61</td><td>solved L from target_hz</td></tr>
+<tr><td>G6</td><td>1567.98</td><td>9.638</td><td>1.500</td><td>0.875</td><td>2.159</td><td>7.479</td><td>1567.98</td><td>free-free Euler-Bernoulli f1=1.028(h/L^2)sqrt(E/rho); first-order; Padauk E=12.6GPa rho=745kg/m3</td><td>Padauk</td><td>0.92</td><td>5.45</td><td>solved L from target_hz</td></tr>
+<tr><td>G#6</td><td>1661.22</td><td>9.363</td><td>1.500</td><td>0.875</td><td>2.097</td><td>7.266</td><td>1661.22</td><td>free-free Euler-Bernoulli f1=1.028(h/L^2)sqrt(E/rho); first-order; Padauk E=12.6GPa rho=745kg/m3</td><td>Padauk</td><td>0.80</td><td>5.29</td><td>solved L from target_hz</td></tr>
+<tr><td>A6</td><td>1760.00</td><td>9.097</td><td>1.500</td><td>0.875</td><td>2.038</td><td>7.059</td><td>1760.00</td><td>free-free Euler-Bernoulli f1=1.028(h/L^2)sqrt(E/rho); first-order; Padauk E=12.6GPa rho=745kg/m3</td><td>Padauk</td><td>0.69</td><td>5.14</td><td>solved L from target_hz</td></tr>
+<tr><td>A#6</td><td>1864.66</td><td>8.838</td><td>1.500</td><td>0.875</td><td>1.980</td><td>6.858</td><td>1864.66</td><td>free-free Euler-Bernoulli f1=1.028(h/L^2)sqrt(E/rho); first-order; Padauk E=12.6GPa rho=745kg/m3</td><td>Padauk</td><td>0.58</td><td>5.00</td><td>solved L from target_hz</td></tr>
+<tr><td>B6</td><td>1975.53</td><td>8.586</td><td>1.500</td><td>0.875</td><td>1.923</td><td>6.663</td><td>1975.53</td><td>free-free Euler-Bernoulli f1=1.028(h/L^2)sqrt(E/rho); first-order; Padauk E=12.6GPa rho=745kg/m3</td><td>Padauk</td><td>0.48</td><td>4.85</td><td>solved L from target_hz</td></tr>
+<tr><td>C7</td><td>2093.00</td><td>8.342</td><td>1.500</td><td>0.875</td><td>1.869</td><td>6.473</td><td>2093.00</td><td>free-free Euler-Bernoulli f1=1.028(h/L^2)sqrt(E/rho); first-order; Padauk E=12.6GPa rho=745kg/m3</td><td>Padauk</td><td>0.38</td><td>4.71</td><td>solved L from target_hz</td></tr>
+</table>
+
+<div class="page-break"></div>
+
+<h2>jig-decision.md</h2>
+
+<p>Project artifact.</p>
+
+<h1>Xylophone — Jig Decisions</h1>
+
+<p>Three jig decisions, each with build/no-build recommendation, the</p>
+<p>break-even calculation that drives it, and a one-paragraph build</p>
+<p>sketch when the answer is build.</p>
+
+<h2>1. Node-hole drilling jig — **BUILD**</h2>
+
+<p>**Decision.** Build a fixed-fence drilling jig with two adjustable</p>
+<p>stops keyed to the 22.4% / 77.6% positions of the bar length.</p>
+
+<p>**Rationale.** 25 bars × 2 holes = 50 holes. Each hole must land</p>
+<p>within ±1/32&quot; of the node position or the bar&#x27;s first mode picks up</p>
+<p>audible damping. Hand-marking 50 holes from a tape measure is</p>
+<p>unreliable at this tolerance. A jig with two flip-stops set against</p>
+<p>the bar end pays back the build time on bar #4 or #5.</p>
+
+<p>**Sketch.** Plywood base 22&quot;×6&quot;×1/2&quot;, drill press fence along the</p>
+<p>back edge, two T-track flip-stops in a pair of 6&quot; T-tracks routed</p>
+<p>flush. Each bar&#x27;s two stop positions get pre-marked on a strip</p>
+<p>sticker per note — operator slides the bar against the front stop</p>
+<p>for the low-side hole, drills, flips the front stop down and the</p>
+<p>back stop up, drills the high-side hole. The stops are positioned</p>
+<p>from the bar&#x27;s actual length, not a percent, so the operator never</p>
+<p>does math at the drill press.</p>
+
+<h2>2. Bar-end-shaving sled — **BUILD**</h2>
+
+<p>**Decision.** Build a low-angle hand-plane shooting sled sized to</p>
+<p>the longest bar.</p>
+
+<p>**Rationale.** Tuning happens by removing material from the bar</p>
+<p>ends — *not* the underside (xylophone has no arch). End-shaving</p>
+<p>needs to be square to the bar&#x27;s long axis and parallel to the</p>
+<p>opposite end, otherwise the bar develops a wedge that affects both</p>
+<p>the fundamental tuning and the cord-hole alignment. A shooting sled</p>
+<p>makes both square and parallel automatic.</p>
+
+<p>**Sketch.** Hardwood base 20&quot;×6&quot;, 90° fence along one long edge,</p>
+<p>a stop block at the right end and a clamp wedge at the left. The</p>
+<p>bar slides against the fence; the plane runs along the base; the</p>
+<p>stop block prevents over-running the cut. A piece of 220 paper</p>
+<p>glued to the fence prevents skating. Build the fence dead-square</p>
+<p>to the base — measure with a machinist square before glue-up.</p>
+
+<h2>3. Frame-rail miter sled — **NO BUILD; use existing miter saw**</h2>
+
+<p>**Decision.** Cut the rail-to-leg miters on the existing sliding</p>
+<p>compound miter saw. No jig.</p>
+
+<p>**Rationale.** Eight 45° miters total (four leg ends × two each).</p>
+<p>A standard miter saw with a sharp 80T blade lands every miter at</p>
+<p>±0.25° easily, and the joints are reinforced by gusset plates</p>
+<p>anyway. Building a miter sled would cost a half-day and pay back</p>
+<p>nothing for an 8-cut job.</p>
+
+<p>**Note for marimba sister repo.** A multi-octave marimba has 60+</p>
+<p>miter cuts in the resonator-tube wells alone. The marimba repo</p>
+<p>should re-evaluate this decision and likely build a dedicated</p>
+<p>sled.</p>
+
+<div class="page-break"></div>
+
+<h2>photo-shotlist.md</h2>
+
+<p>Project artifact.</p>
+
+<h1>Xylophone — Photo Shotlist</h1>
+
+<p>Ten shots that the build-log site, capstone deck, and visual BOM all</p>
+<p>draw from. Tied to the repo-level `docs/photo-pipeline.md` rules</p>
+<p>(neutral background, 5500K key light, sensor at instrument plane,</p>
+<p>no flash, JPEG + RAW). When a photo is captured, drop it under</p>
+<p>`images/` with the slug filename listed below — the deck and site</p>
+<p>templates will pick them up.</p>
+
+<h2>1. Hero — `images/01-hero.jpg`</h2>
+
+<p>Full instrument on a clean dark-grey background, three-quarter angle</p>
+<p>from above-right, both mallets resting at the keyboard end of the</p>
+<p>frame. Lens normal-to-wide (35–50mm full frame). This is the README</p>
+<p>hero swap — until captured, `images/xylophone-hero-placeholder.svg`</p>
+<p>stands in.</p>
+
+<h2>2. Bar fan — `images/02-bar-fan.jpg`</h2>
+
+<p>All 25 bars laid out flat on a white seamless, shortest-to-longest,</p>
+<p>1/2&quot; gap between each. Top-down. This image goes on the deck&#x27;s</p>
+<p>&quot;Family Plan&quot; slide.</p>
+
+<h2>3. Node-hole detail — `images/03-node-hole-detail.jpg`</h2>
+
+<p>Macro of the 1/8&quot; node hole on the C5 bar with paracord threaded</p>
+<p>through. Lens 100mm macro. Light raking from one side to bring out</p>
+<p>the cord texture and the hole chamfer. Goes on the assembly-manual&#x27;s</p>
+<p>node-suspension step.</p>
+
+<h2>4. Frame elevation — `images/04-frame-elevation.jpg`</h2>
+
+<p>Side-on, eye-level, frame only (no bars), centered. Shot far enough</p>
+<p>back to be free of perspective distortion (~85mm full frame).</p>
+<p>Used in `drawing-brief.md` as the dimension reference photo.</p>
+
+<h2>5. Mallet trio — `images/05-mallet-trio.jpg`</h2>
+
+<p>Hard rubber, lexan, and rosewood-head mallets laid parallel on a</p>
+<p>white seamless, heads aligned at the top. Top-down. Used in the</p>
+<p>`bom.csv`-driven visual BOM.</p>
+
+<h2>6. Suspension cord — `images/06-suspension-cord.jpg`</h2>
+
+<p>Three-quarter view of one full bar suspended on the cord at both</p>
+<p>node holes, with the cord ends terminating at the rail with the brass</p>
+<p>finish washers. Shows the geometry without the rest of the bars in</p>
+<p>frame. Used on the build-log site&#x27;s &quot;How the bars are suspended&quot;</p>
+<p>section.</p>
+
+<h2>7. Tuner on bar — `images/07-tuner-on-bar.jpg`</h2>
+
+<p>The Korg OT-120 displayed mid-measurement on the A5 bar, mallet just</p>
+<p>having struck. Captures the validation workflow in one frame. Used</p>
+<p>on the validation slide of the deck.</p>
+
+<h2>8. Resonator stub — `images/08-resonator-stub.jpg` (deferred)</h2>
+
+<p>A single quarter-wave aluminum tube cut to the C5 resonator length</p>
+<p>(5.22&quot;), held against the underside of the suspended C5 bar. Shot</p>
+<p>when v2 build adds resonators. Until then, this slot stays blank.</p>
+
+<h2>9. Moisture meter — `images/09-moisture-meter.jpg`</h2>
+
+<p>Pin meter inserted into the end-grain of a Padauk blank pre-glue-up,</p>
+<p>display showing 6.5–7.5% MC. Goes on the assembly-manual&#x27;s</p>
+<p>&quot;Verify moisture&quot; step.</p>
+
+<h2>10. Finished assembly — `images/10-finished-assembly.jpg`</h2>
+
+<p>Three-quarter wide-angle of the finished xylophone in a play-ready</p>
+<p>position (mallets in player&#x27;s hands, bars attached, frame on a</p>
+<p>real floor). Eye-level standing. The &quot;this thing works&quot; portrait</p>
+<p>that closes the build-log site.</p>
+
+<div class="page-break"></div>
+
+<h2>resources.md</h2>
+
+<p>Project artifact.</p>
+
+<h1>Xylophone — Resources</h1>
+
+<p>Citations, references, and the source-of-truth pointers that this</p>
+<p>packet relies on. Where the packet states a number, this file says</p>
+<p>*where the number came from*.</p>
+
+<h2>Acoustic physics</h2>
+
+<ul>
+<li>**Fletcher, Neville H., and Thomas D. Rossing.** *The Physics of</li>
+</ul>
+<p>  Musical Instruments,* 2nd ed., Springer, 1998. Chapter 19 (Bars,</p>
+<p>  Plates, and Membranes) — the canonical free-free Euler-Bernoulli</p>
+<p>  derivation. Equations 19.7–19.13 yield the `K_free_free / K_cantilever</p>
+<p>  = (4.730/1.875)² ≈ 6.36` factor used throughout this packet.</p>
+<ul>
+<li>**Bork, Ingolf.** &quot;Practical Tuning of Xylophone Bars and Resonators,&quot;</li>
+</ul>
+<p>  *Applied Acoustics* 46 (1995): 103–127. Source for the 12th-overtone</p>
+<p>  tuning convention and the bar-end-shaving correction shape. Bork&#x27;s</p>
+<p>  measured-vs-flat-bar second-mode ratio (~2.756) is the basis for the</p>
+<p>  `first-mode-vs-second-mode-misalignment` risk.</p>
+<ul>
+<li>**Suits, B. H.** &quot;Basic Physics of Xylophone and Marimba Bars.&quot;</li>
+</ul>
+<p>  *American Journal of Physics* 69(7) (2001): 743–750. Clean</p>
+<p>  derivation of the arch-undercut math the marimba sister repo will</p>
+<p>  inherit; **explicitly cited** here as the &quot;deferred-to-marimba&quot;</p>
+<p>  reference.</p>
+<ul>
+<li>**`acoustic-models.md`** (instrument-maker-v4 skill,</li>
+</ul>
+<p>  `references/acoustic-models.md`). Free-Free Beams section is the</p>
+<p>  primary citation — it both consolidates the formula in Tony&#x27;s house</p>
+<p>  units (h, L, E, ρ) and carries the empirical-correction guard rules</p>
+<p>  that govern when K-constants do and do not apply.</p>
+
+<h2>Material constants</h2>
+
+<ul>
+<li>**Wood Database** (Eric Meier, https://www.wood-database.com/). E</li>
+</ul>
+<p>  and ρ values for African Padauk (E ≈ 12.6 GPa, ρ ≈ 745 kg/m³),</p>
+<p>  Honduras Rosewood (E ≈ 14.1 GPa, ρ ≈ 1000 kg/m³), and Hard Maple</p>
+<p>  (E ≈ 12.6 GPa, ρ ≈ 705 kg/m³). Cross-checked against the K-constant</p>
+<p>  table in `acoustic-models.md`.</p>
+
+<h2>Tuning workflow / measurement</h2>
+
+<ul>
+<li>**`record_measurement.py`** (instrument-maker-v4 skill,</li>
+</ul>
+<p>  `scripts/record_measurement.py`). Schema for `validation.csv` and</p>
+<p>  the per-family corrections database. The `tuner_make_model`,</p>
+<p>  `temp_F`, `humidity_RH_percent`, and `cents_target` columns in</p>
+<p>  this packet&#x27;s `validation.csv` map 1:1 to the script&#x27;s CLI flags.</p>
+<ul>
+<li>**Korg OT-120** orchestral chromatic tuner. ±0.1 cent accuracy in</li>
+</ul>
+<p>  the C5–C7 range. Listed as the device of record in `bom.csv`.</p>
+
+<h2>Empirical-correction guard rules</h2>
+
+<ul>
+<li>**`acoustic-models.md`** &quot;Empirical-correction guard rules&quot; section.</li>
+</ul>
+<p>  Cited in `design.md`&#x27;s Governing Model and in every prediction line</p>
+<p>  of `family-spec.csv`. The summary in shop-friendly terms: K2 and</p>
+<p>  end-corrections **do not apply** to bar idiophones; cantilever</p>
+<p>  K-constants apply to free-free via the 6.36× factor; everything is</p>
+<p>  *first-order* until measured.</p>
+
+<h2>Repository conventions</h2>
+
+<ul>
+<li>**`tongue-drum/README.md`** (sister repo). README structure,</li>
+</ul>
+<p>  cross-repo link block, magazine-baseline attribution pattern. This</p>
+<p>  packet&#x27;s `README.md` rewrites in the same shape.</p>
+<ul>
+<li>**`tongue-drum/cad/`** (sister repo). SolidWorks master-layout</li>
+</ul>
+<p>  convention for parametric design tables. Cited in `cad/README.md`</p>
+<p>  as the model the xylophone CAD will follow when built.</p>
+<ul>
+<li>**`golden-examples.md`** (instrument-maker-v4 skill,</li>
+</ul>
+<p>  `references/golden-examples.md`). Mode A root-mode layout exemplar</p>
+<p>  — every file in this packet sits at the repo root because that</p>
+<p>  reference says so.</p>
+
+<h2>Marimba/xylophone difference summary</h2>
+
+<p>The single best one-page summary of how xylophone and marimba differ:</p>
+<p>**Suits 2001** (above). The salient points the packet operationalizes:</p>
+
+<ul>
+<li>Xylophone tunes the second mode to a 12th (3:1 ratio) above the</li>
+</ul>
+<p>  fundamental; marimba tunes to two octaves (4:1).</p>
+<ul>
+<li>Xylophone bars are typically rosewood or padauk, smaller cross-section,</li>
+</ul>
+<p>  often without arch undercut in low-end / educational instruments.</p>
+<ul>
+<li>Xylophone resonators (when present) are shorter quarter-wave tubes;</li>
+</ul>
+<p>  marimba resonators are tuned at the bench by ear.</p>
+<ul>
+<li>Mallets are harder for xylophone; bars consequently must be harder</li>
+</ul>
+<p>  wood and well-supported at the nodes.</p>
+
+<p>Every &quot;marimba-equivalent&quot; callout in `design.md` traces back to this</p>
+<p>section.</p>
+
+<div class="page-break"></div>
+
+<h2>risks.md</h2>
+
+<p>Project artifact.</p>
+
+<h1>Xylophone — Risks Register</h1>
+
+<p>Five categories, at least one entry each, every entry with an</p>
+<p>attached verification *test* per the v4 red-team specialist contract.</p>
+
+<h2>Acoustic</h2>
+
+<h3>bar-cracking-from-hard-mallets</h3>
+<p>**Risk.** Hard rubber and lexan mallets, especially struck near the</p>
+<p>bar end rather than at the strike line, can crack a flat-bar Padauk</p>
+<p>bar within months. Hard mallets are appropriate for xylophone — but</p>
+<p>the failure mode is real and accelerates with low ambient humidity.</p>
+
+<p>**Test.** Strike test: with the C5 bar (longest, most stress) clamped</p>
+<p>in the suspension cord, strike 100 times near the strike line and</p>
+<p>50 times deliberately near the end with a hard rubber mallet. Inspect</p>
+<p>for hairline cracks under raking light. Repeat after 30 days at</p>
+<p>shop ambient. Pass = no visible cracks; fail = any crack.</p>
+
+<h3>first-mode-vs-second-mode-misalignment</h3>
+<p>**Risk.** First-order math predicts only `f_1`. The 12th-overtone</p>
+<p>xylophone tuning convention asks for the second flexural mode to</p>
+<p>sit at a 3:1 ratio, which a flat bar does **not** naturally do —</p>
+<p>the unpinched second-mode ratio of a free-free Euler-Bernoulli</p>
+<p>beam is closer to 2.756. Means players will hear the second mode</p>
+<p>&quot;out of tune&quot; with the fundamental.</p>
+
+<p>**Test.** Spectrum-analyzer measurement (free phone app like</p>
+<p>SpectroidPro): pluck/strike the bar, capture the spectrum, identify</p>
+<p>the fundamental and the strongest second peak, compute the ratio.</p>
+<p>Pass = ratio between 2.7 and 3.0 (unundercut bars cluster around</p>
+<p>2.756); fail = ratio outside that band. Document. The marimba sister</p>
+<p>repo will fix this with arch undercut; the xylophone v1 packet</p>
+<p>*accepts* the natural ratio and notes it on the validation sheet.</p>
+
+<h2>Structural</h2>
+
+<h3>moisture-retune-drift</h3>
+<p>**Risk.** Padauk at 6–8% MC at glue-up will move when the shop ambient</p>
+<p>changes. A 4% MC swing across a humid summer to a dry winter can shift</p>
+<p>fundamentals by 5–15 cents. Not a structural failure, but a tuning</p>
+<p>failure that compounds across all 25 bars.</p>
+
+<p>**Test.** Record temp/RH at every measurement row in `validation.csv`</p>
+<p>(rows V2 through V8). Re-measure every bar at 30 and 60 days</p>
+<p>(rows V6, V7). Pass = drift within ±5 cents on all bars at both</p>
+<p>checkpoints; fail = drift exceeds ±5 cents — flag the bar in</p>
+<p>`record_measurement.py`, update the per-family corrections database.</p>
+
+<h3>cord-hole-tear-out</h3>
+<p>**Risk.** 1/8&quot; node holes drilled near the bar&#x27;s high-stress mode</p>
+<p>zone. Repeated player force on the cord at the hole can tear out the</p>
+<p>hole, especially if grain runs across it.</p>
+
+<p>**Test.** Pull-test on the longest bar (C5): tie the suspension cord</p>
+<p>through both holes, suspend the bar, hang a 5-lb weight from the</p>
+<p>center of the bar, hold for 60 seconds. Inspect holes for cracking</p>
+<p>or elongation. Pass = no visible damage; fail = elongation, splitting,</p>
+<p>or cord chafing. If fail, drill a slightly larger hole and chamfer</p>
+<p>both ends.</p>
+
+<h2>Ergonomic</h2>
+
+<h3>frame-tipping-on-uneven-floor</h3>
+<p>**Risk.** 4-leg trestle frame with a 21&quot; rail and 30&quot; leg height can</p>
+<p>tip if a player strikes near the rail end with a heavy two-handed</p>
+<p>attack on an uneven floor.</p>
+
+<p>**Test.** Place frame on a 5° tilted board. Have a player strike</p>
+<p>the C5 bar (rail end) with full two-handed force using yarn-wrapped</p>
+<p>medium mallets. Frame should not tip. Pass = stable; fail = tips.</p>
+<p>Mitigation if fail: add 6&quot; leg-foot crossbraces or weight the bottom</p>
+<p>of each leg.</p>
+
+<h2>Supply</h2>
+
+<h3>honduras-rosewood-cites-lead-time</h3>
+<p>**Risk.** If a player overrides the Padauk default and chooses</p>
+<p>Honduras Rosewood, the species is **CITES Appendix II** as of</p>
+<p>2017. Sourcing with proper documentation is slow (60–120 days)</p>
+<p>and expensive (~3× Padauk).</p>
+
+<p>**Test.** If HR is selected, validate before order: supplier provides</p>
+<p>CITES export permit number; cross-check against the CITES species</p>
+<p>database. Pass = permit number valid and product description matches;</p>
+<p>fail = no permit or mismatch — reject the order, fall back to Padauk.</p>
+
+<h2>Fit/Finish</h2>
+
+<h3>tung-oil-finish-darkening-padauk</h3>
+<p>**Risk.** Padauk is naturally bright orange-red but oxidizes to a</p>
+<p>deeper brown over months. Tung oil accelerates the oxidation. After</p>
+<p>6–12 months bars look noticeably darker than at first build —</p>
+<p>visual mismatch if a single bar is replaced later.</p>
+
+<p>**Test.** Cut a 2&quot;×2&quot; Padauk swatch at the same time as the bars.</p>
+<p>Apply same finish schedule. Store with the bars. After 30, 60, 180</p>
+<p>days, photograph swatch under controlled light. Pass = expected</p>
+<p>gradual darkening, no spotting or blooming; fail = uneven oxidation</p>
+<p>patches — switch to a UV-blocking topcoat.</p>
+</body></html>

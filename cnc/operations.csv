@@ -1,0 +1,5 @@
+op_id,sequence,part_id,operation,tool_id,feed_in_per_min,rpm,passes,workholding,datum,release_check
+OP1-rails,1,FRAME-RAIL,outline rail to 21.0 x 2.25 x 1.25 in,T01,90,16000,4,toggle-clamp+L-fence,lower-left+Z-top,verify rail thickness at 4 corners
+OP2-rail-dado,2,FRAME-RAIL,0.125 in dado along inside top edge,T02,60,18000,1,toggle-clamp+L-fence,same as OP1,confirm bit length and stickout
+OP3-legs,3,FRAME-LEG,two mortises in top face per leg,T03,50,14000,1,toggle-clamp,lower-left+Z-top,dry-run at Z+0.5 before first cut
+OP4-gussets,4,FRAME-GUSSET,cut 4 triangle gussets from 12x12 plywood,T01,110,16000,2,vacuum-table,lower-left+Z-top,confirm vacuum seal before through-cuts
