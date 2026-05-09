@@ -119,6 +119,17 @@ xylophone/
 └── site/                         ← static build-log site
 ```
 
+## Round 3 L2 Review Evidence
+
+- `git diff --check` is expected to pass for the Round 3 packet branch.
+- `python3 /home/tony/.codex/skills/instrument-maker-v4/scripts/validate_packet.py . --mode root`
+  is the root-mode gate before merge review.
+- This packet is L2: free-free bar model, design table, sourcing, cut list,
+  validation plan, assembly notes, print packet, capstone artifacts, and site
+  draft are present for human review.
+- Empirical/build gates remain deferred until pilot bars are cut, measured,
+  tuned, mounted, and logged in `validation.csv`.
+
 ## License
 
 [CC BY 4.0](LICENSE) — see LICENSE for details.
