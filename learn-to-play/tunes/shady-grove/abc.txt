@@ -1,0 +1,11 @@
+X:5
+T:Shady Grove
+C:Traditional Appalachian ballad, PD
+M:3/4
+L:1/4
+Q:1/4=80
+K:Dmin
+a' | a' g' e' | d'2 e' | g'2 e' | d'3 |
+d' e' g' | a'2 g' | e'2 d' | A3 |
+a' | a' g' e' | d'2 e' | g'2 e' | d'3 |
+d' e' g' | a' g' e' | d'3- | d'3 |

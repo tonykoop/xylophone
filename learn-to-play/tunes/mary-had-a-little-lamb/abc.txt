@@ -1,0 +1,9 @@
+X:1
+T:Mary Had a Little Lamb
+C:Sarah Josepha Hale (1830), PD; tune trad.
+M:4/4
+L:1/4
+Q:1/4=96
+K:C
+e' d' c' d' | e' e' e'2 | d' d' d'2 | e' g' g'2 |
+e' d' c' d' | e' e' e' e' | d' d' e' d' | c'4 |
