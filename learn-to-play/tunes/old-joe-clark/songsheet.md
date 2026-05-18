@@ -1,7 +1,7 @@
 # Old Joe Clark — Songsheet
 
-**Key:** A mixolydian (A major with G natural)  **Tempo:** ♩= 132  
-**Meter:** 4/4  **Difficulty:** ★★☆  **Range:** D4–F5  
+**Key:** A mixolydian (A major with G natural)  **Tempo:** ♩= 132
+**Meter:** 4/4  **Difficulty:** ★★☆  **Range:** D4–F5
 **Source:** Traditional Appalachian fiddle tune, public domain
 
 ## Music

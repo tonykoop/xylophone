@@ -1,6 +1,6 @@
 # Shady Grove — Songsheet
 
-**Key:** D dorian  **Tempo:** ♩= 80  **Meter:** 3/4  **Difficulty:** ★★★  
+**Key:** D dorian  **Tempo:** ♩= 80  **Meter:** 3/4  **Difficulty:** ★★★
 **Range:** A3–A5  **Source:** Traditional Appalachian ballad, public domain
 
 ## Music
@@ -16,6 +16,6 @@ D dorian = D natural minor with B-natural (not Bb). This gives the tune its arch
 
 ## Notes
 - The pickup note a' starts the melody; the final bar ties across for a held ending.
-- The low A (A3 — capital A in ABC) drops two octaves below the melody. 
+- The low A (A3 — capital A in ABC) drops two octaves below the melody.
   If your xylophone doesn't reach A3, substitute A4 (a in ABC).
 - Play slowly with feeling — don't rush the spaces between phrases.

@@ -1,6 +1,6 @@
 # Simple Gifts — Songsheet
 
-**Key:** F major  **Tempo:** ♩= 100  **Meter:** 4/4  **Difficulty:** ★★☆  
+**Key:** F major  **Tempo:** ♩= 100  **Meter:** 4/4  **Difficulty:** ★★☆
 **Range:** F4–D5  **Source:** Elder Joseph Brackett, Shaker hymn (1848), PD
 
 ## Music

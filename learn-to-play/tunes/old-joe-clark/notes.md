@@ -1,6 +1,6 @@
 # Notes: Old Joe Clark
 
-**Provenance:** Traditional Appalachian fiddle tune, origin uncertain, documented from the early 
+**Provenance:** Traditional Appalachian fiddle tune, origin uncertain, documented from the early
 19th century. Multiple PD versions in Cecil Sharp's collections. This lead-sheet melody is PD.
 
 **Range check:** D4–F5. Spans nearly two octaves — the B section sits a fifth higher than A.

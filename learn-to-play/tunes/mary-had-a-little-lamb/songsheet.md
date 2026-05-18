@@ -1,6 +1,6 @@
 # Mary Had a Little Lamb — Songsheet
 
-**Key:** C major  **Tempo:** ♩= 96  **Meter:** 4/4  **Difficulty:** ★☆☆  
+**Key:** C major  **Tempo:** ♩= 96  **Meter:** 4/4  **Difficulty:** ★☆☆
 **Range:** C5–G5  **Source:** Trad. melody; Hale lyric 1830, PD
 
 ## Music

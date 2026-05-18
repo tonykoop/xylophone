@@ -1,7 +1,7 @@
 # Notes: Simple Gifts
 
 **Provenance:** Written by Shaker Elder Joseph Brackett, Alfred Shaker Community, Maine, 1848.
-Published in the Shaker tradition as a public-domain hymn. Copland's "Appalachian Spring" (1944) 
+Published in the Shaker tradition as a public-domain hymn. Copland's "Appalachian Spring" (1944)
 arrangement is NOT PD — use only the Brackett lead-sheet melody, arranged fresh here.
 
 **Range check:** F4–D5. Sits in the heart of the xylophone's range.

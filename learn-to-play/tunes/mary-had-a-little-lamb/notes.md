@@ -1,6 +1,6 @@
 # Notes: Mary Had a Little Lamb
 
-**Provenance:** Melody is traditional (possibly "Goodnight Ladies" era). Lyrics by Sarah Josepha Hale, 
+**Provenance:** Melody is traditional (possibly "Goodnight Ladies" era). Lyrics by Sarah Josepha Hale,
 published 1830 in "Poems for Our Children." Both are in the public domain.
 This arrangement is freshly written from the melody — no modern arranger rights claimed.
 

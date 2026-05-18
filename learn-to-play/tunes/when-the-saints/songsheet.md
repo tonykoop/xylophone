@@ -1,6 +1,6 @@
 # When the Saints Go Marching In — Songsheet
 
-**Key:** C major  **Tempo:** ♩= 112  **Meter:** 4/4  **Difficulty:** ★☆☆  
+**Key:** C major  **Tempo:** ♩= 112  **Meter:** 4/4  **Difficulty:** ★☆☆
 **Range:** C5–A5  **Source:** Traditional spiritual, public domain
 
 ## Music
