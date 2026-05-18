@@ -4,3 +4,4 @@ CSV-001,family-spec.csv,measurement_template,measurement_template,fabrication,xy
 SVG-001,drawings/template.svg,svg_preview,derived_preview,derived_preview,xylophone-design-table.xlsx,derived_from_authority,Template preview must be checked against the design table before per-bar drawing generation.
 IMG-001,images/xylophone-hero-placeholder.svg,svg_preview,concept,concept_only,,none,Placeholder hero image only; no dimensional or fabrication authority.
 HTML-001,explorer.html,render_preview,derived_preview,derived_preview,capstone-manifest.json,derived_from_authority,Studio navigation surface derived from packet files; it does not add dimensions.
+CHECK-001,drawings/per-bar-dxf-checklist.csv,measurement_template,measurement_template,reference_only,,none,Round 33C/D checklist for future per-bar DXF review; not itself drawing or fabrication authority.

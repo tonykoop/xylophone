@@ -17,6 +17,11 @@ gating row in `validation.csv` is V2 (post-cut measurement) — once
 real measured data exists, the model can be built with confidence
 that the parametric inputs are calibrated.
 
+Round 33C/D adds `solidworks-master-authority-plan.md` as the CAD release
+contract. It names the intended SolidWorks files, extracted-dimension CSV, and
+review gates, but it does not add a SolidWorks master or promote any DXF/CAD
+artifact to fabrication authority.
+
 ## Naming convention (when built)
 
 - `XYL-001_MasterLayout.SLDPRT` — single master part, design table
@@ -37,3 +42,7 @@ that the parametric inputs are calibrated.
   Tony's SW workflow (global equations, design tables, master sketch).
 - `xylophone-design-table.xlsx` — the existing input source. Don't
   duplicate; reference.
+- `solidworks-master-authority-plan.md` — local gate for future master-layout,
+  extracted-dimension, and per-bar DXF release.
+- `../drawings/per-bar-dxf-checklist.csv` — per-bar review checklist to complete
+  before any generated DXF is treated as shop authority.

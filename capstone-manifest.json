@@ -16,6 +16,7 @@
     "deferred_until_measured": [
       "pilot bar measured tuning",
       "per-bar reviewed drawings",
+      "per-bar DXF checklist completion",
       "resonator build decision",
       "SolidWorks/CAD release"
     ]
@@ -26,6 +27,8 @@
     "sourcing.csv",
     "cut-list.csv",
     "drawing-brief.md",
+    "cad/solidworks-master-authority-plan.md",
+    "drawings/per-bar-dxf-checklist.csv",
     "assembly-manual.md",
     "validation.csv",
     "validation-loop.csv",

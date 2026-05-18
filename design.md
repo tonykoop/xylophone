@@ -225,15 +225,18 @@ exactly these eight rows in the design table to bootstrap.
    resonators are not specified in the BOM. Adding them is additive,
    not breaking — the frame design leaves vertical clearance.
 6. **CAD.** SolidWorks master-layout part is deferred; the
-   `cad/` folder has a stub README pointing at the tongue-drum
-   convention and the existing `xylophone-design-table.xlsx`.
+   `cad/` folder now includes `solidworks-master-authority-plan.md`
+   naming the future master-layout, extracted-dimension CSV, and
+   per-bar DXF release gates. This is an authority plan only, not
+   a CAD release.
 7. **Mallet supplier.** v1 lists generic hard-rubber mallets; specific
    supplier (Innovative Percussion vs Encore vs Vic Firth) is not
    selected.
 8. **Visual authority.** `images/xylophone-hero-placeholder.svg` and
    `drawings/template.svg` are concept or preview aids. Fabrication authority
    stays with the design table and reviewed measurement records until
-   per-bar drawings are generated from the table and checked.
+   per-bar drawings are generated from the table, checked against
+   `drawings/per-bar-dxf-checklist.csv`, and recorded in the visual register.
 
 These rows are exactly the assumptions the handoff report
 flags. Each becomes a `validation.csv` or `bom.csv` line item once
