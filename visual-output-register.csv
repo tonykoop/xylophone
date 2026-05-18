@@ -1,0 +1,6 @@
+artifact_id,path,artifact_kind,role,authority,derived_from,dimension_claim,notes
+DT-001,xylophone-design-table.xlsx,design_table,design_table,fabrication,,derived_from_authority,Parametric design table controls first-order bar dimensions before physical measurement.
+CSV-001,family-spec.csv,measurement_template,measurement_template,fabrication,xylophone-design-table.xlsx,derived_from_authority,Per-note table records predicted dimensions and resonator planning fields; not bench validation.
+SVG-001,drawings/template.svg,svg_preview,derived_preview,derived_preview,xylophone-design-table.xlsx,derived_from_authority,Template preview must be checked against the design table before per-bar drawing generation.
+IMG-001,images/xylophone-hero-placeholder.svg,svg_preview,concept,concept_only,,none,Placeholder hero image only; no dimensional or fabrication authority.
+HTML-001,explorer.html,render_preview,derived_preview,derived_preview,capstone-manifest.json,derived_from_authority,Studio navigation surface derived from packet files; it does not add dimensions.

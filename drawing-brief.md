@@ -75,3 +75,11 @@ packet will populate `drawings/DR-01-bar-*.svg` from `family-spec.csv`.
 Until that runs, `drawings/template.svg` is the placeholder showing
 the title-block layout and the datum chain so the generator's output
 matches in style.
+
+## Round 31 Authority Note
+
+`drawings/template.svg` is a derived preview, not a shop-release drawing.
+Before cutting bars from drawings, generate the per-bar SVGs from
+`xylophone-design-table.xlsx` / `family-spec.csv`, review the node-hole
+positions against the selected pilot-bar measurements, and update
+`visual-output-register.csv` so the drawing authority chain remains explicit.

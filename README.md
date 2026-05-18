@@ -24,8 +24,10 @@ shop session and so the marimba follow-on can inherit a clean
 scaffold rather than starting from scratch.
 
 The root-of-truth design table is `xylophone-design-table.xlsx` at
-the repo root. Every length, hole position, and resonator length in
-`family-spec.csv` is solved from the parametric inputs there.
+the repo root. Every length, hole position, and resonator planning
+length in `family-spec.csv` is solved from the parametric inputs
+there, then held at `measurement_required` until a pilot bar is cut,
+tuned, mounted, and logged.
 
 ## Design overview
 
@@ -44,7 +46,8 @@ the repo root. Every length, hole position, and resonator length in
 - **Frame:** parametric 4-leg trestle, 21" wide × 30" tall, hard
   maple rails and legs with Baltic-birch corner gussets.
 - **Resonators:** computed but optional. The L-per-note math is in
-  `family-spec.csv` so adding resonators in v2 is additive.
+  `family-spec.csv` so adding resonators in v2 is additive; those
+  lengths are not fabrication authority in this packet.
 
 ## Family-table preview (first and last)
 
@@ -62,13 +65,13 @@ Full table: [`family-spec.csv`](family-spec.csv).
 
 ## Why this packet exists
 
-This is the v4.3 challenge run for the
-[`instrument-maker-v4`](https://github.com/tonykoop/instrument-maker)
-skill, exercising the **root-mode** packet contract end-to-end on a
-new wooden-idiophone family. Specifically:
+This repo began as a v4.3 root-mode challenge run for the
+[`instrument-maker`](https://github.com/tonykoop/instrument-maker)
+skill and is now being held to the Round 31 V5 authority contract for a
+wooden-idiophone build packet. Specifically:
 
-1. Validates the v4.3 root-mode validator (`validate_packet.py
-   --mode root`) against a fresh Mode A repo.
+1. Preserves the original root-mode packet shape while adding V5 readiness,
+   validation-loop, and visual-authority gates.
 2. Demonstrates the bar-idiophone branch of `acoustic-models.md`'s
    Free-Free Beams section with first-order honesty about K2 and
    end-correction guard rules.
@@ -98,6 +101,8 @@ xylophone/
 ├── bom.csv, sourcing.csv         ← parts and supplier candidates
 ├── cut-list.csv                  ← shop cut list (bars + frame)
 ├── validation.csv                ← measured-tuning workflow (8 rows)
+├── validation-loop.csv           ← Round 31 measurement-required gates
+├── visual-output-register.csv    ← visual/CAD/design-table authority register
 ├── assembly-manual.md            ← 14-step shop manual
 ├── supplier-rfq.md               ← bar-stock RFQ template
 ├── drawing-brief.md              ← what the SVG drawings must show
@@ -119,14 +124,16 @@ xylophone/
 └── site/                         ← static build-log site
 ```
 
-## Round 3 L2 Review Evidence
+## Round 31 V5 Build-Packet Gate
 
-- `git diff --check` is expected to pass for the Round 3 packet branch.
-- `python3 /home/tony/.codex/skills/instrument-maker-v4/scripts/validate_packet.py . --mode root`
-  is the root-mode gate before merge review.
-- This packet is L2: free-free bar model, design table, sourcing, cut list,
-  validation plan, assembly notes, print packet, capstone artifacts, and site
-  draft are present for human review.
+- This PR treats the repo as a V5/L1 build-packet candidate, not a
+  bench-validated or build-ready instrument.
+- `xylophone-design-table.xlsx` and `family-spec.csv` are the planning
+  authority for first-order bar dimensions and node-hole positions.
+- `visual-output-register.csv` records that the hero placeholder and SVG
+  previews are not fabrication authority.
+- `validation-loop.csv` names the pilot-bar, resonator, frame/CNC, and visual
+  authority gates that must close before any L2 or shop-release claim.
 - Empirical/build gates remain deferred until pilot bars are cut, measured,
   tuned, mounted, and logged in `validation.csv`.
 

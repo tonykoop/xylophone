@@ -1,7 +1,25 @@
 {
-  "packet_dir": "/mnt/c/Users/Tony/Documents/GitHub/xylophone",
+  "packet_dir": ".",
   "title": "Xylophone Capstone",
   "generated": "2026-05-08",
+  "readiness": "L1_packet -> measurement_required",
+  "fabrication_authority": {
+    "current_authority": [
+      "xylophone-design-table.xlsx",
+      "family-spec.csv"
+    ],
+    "non_authority_visuals": [
+      "images/xylophone-hero-placeholder.svg",
+      "drawings/template.svg",
+      "explorer.html"
+    ],
+    "deferred_until_measured": [
+      "pilot bar measured tuning",
+      "per-bar reviewed drawings",
+      "resonator build decision",
+      "SolidWorks/CAD release"
+    ]
+  },
   "files_included": [
     "design.md",
     "bom.csv",
@@ -10,6 +28,8 @@
     "drawing-brief.md",
     "assembly-manual.md",
     "validation.csv",
+    "validation-loop.csv",
+    "visual-output-register.csv",
     "supplier-rfq.md",
     "visual-bom-brief.md",
     "wolfram-starter.wl",
@@ -22,18 +42,18 @@
   ],
   "asset_discovery": {
     "images": [
-      "/mnt/c/Users/Tony/Documents/GitHub/xylophone/images"
+      "images"
     ],
     "drawings": [
-      "/mnt/c/Users/Tony/Documents/GitHub/xylophone/drawings"
+      "drawings"
     ]
   },
   "outputs": {
-    "capstone_deck_markdown": "/mnt/c/Users/Tony/Documents/GitHub/xylophone/capstone-deck.md",
-    "capstone_deck_pptx": "/mnt/c/Users/Tony/Documents/GitHub/xylophone/capstone-deck.pptx",
-    "print_packet_markdown": "/mnt/c/Users/Tony/Documents/GitHub/xylophone/print-packet.md",
-    "print_packet_html": "/mnt/c/Users/Tony/Documents/GitHub/xylophone/print-packet.html",
-    "print_packet_pdf": "/mnt/c/Users/Tony/Documents/GitHub/xylophone/print-packet.pdf"
+    "capstone_deck_markdown": "capstone-deck.md",
+    "capstone_deck_pptx": "capstone-deck.pptx",
+    "print_packet_markdown": "print-packet.md",
+    "print_packet_html": "print-packet.html",
+    "print_packet_pdf": "print-packet.pdf"
   },
   "notes": [
     "PPTX is created when python-pptx is installed.",
