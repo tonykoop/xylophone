@@ -51,6 +51,8 @@ only valid for the free-free / fixed-free regime — they propagate to
 this packet via the 6.36× factor above. Every predicted frequency in
 `family-spec.csv` is flagged as *first-order*; `validation.csv` is the
 mechanism that closes the gap with measured data after first prototype.
+Round 31 keeps this packet at `L1_packet -> measurement_required` until
+that loop has actual tuner evidence.
 
 **Xylophone tuning convention.** Bars are tuned to align the *12th
 overtone* (3:1 frequency ratio above the fundamental — actually the
@@ -143,7 +145,8 @@ C5** down to **0.38" at C7**. The high-end values are too short to
 build practically — the production decision will be: tune resonators
 on bars at C5 through approximately G5 (lengths > 3"), and skip
 resonators on the upper octave. This decision is made when resonators
-are installed, not now.
+are installed, not now; the `resonator_l_in_optional` column is a
+planning field only.
 
 > Marimba-equivalent: resonators are mandatory; the bore is bigger
 > (typically 2.0–3.0"); each tube is plugged at the bottom and tuned
@@ -227,7 +230,11 @@ exactly these eight rows in the design table to bootstrap.
 7. **Mallet supplier.** v1 lists generic hard-rubber mallets; specific
    supplier (Innovative Percussion vs Encore vs Vic Firth) is not
    selected.
+8. **Visual authority.** `images/xylophone-hero-placeholder.svg` and
+   `drawings/template.svg` are concept or preview aids. Fabrication authority
+   stays with the design table and reviewed measurement records until
+   per-bar drawings are generated from the table and checked.
 
-These eight rows are exactly the assumptions the handoff report
+These rows are exactly the assumptions the handoff report
 flags. Each becomes a `validation.csv` or `bom.csv` line item once
 the gating decision is made.

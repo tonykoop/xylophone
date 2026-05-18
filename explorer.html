@@ -382,7 +382,7 @@ mark.hit{background:var(--gold);color:var(--ink);
 
   <div class="status-row">
     <div class="status-label">Status</div>
-    <div class="status-val"><span class="pill pill-private">Private review</span>&nbsp;&nbsp;</div>
+    <div class="status-val"><span class="pill pill-private">Private review</span>&nbsp;&nbsp;<span class="pill pill-block">Measurement required</span> V5/L1 build-packet candidate; not bench validated or build-ready.</div>
   </div>
   <div class="status-row">
     <div class="status-label">Family</div>
@@ -390,7 +390,7 @@ mark.hit{background:var(--gold);color:var(--ink);
   </div>
   <div class="status-row">
     <div class="status-label">Release gates</div>
-    <div class="status-val"><ul class="gates"><li class="gate"><span class="gate-dot"></span><span class="gate-label">No measured bar data yet; family-spec dimensions are first-order tuning predictions pending pilot validation.</span></li><li class="gate"><span class="gate-dot"></span><span class="gate-label">Resonators are deferred to v2; current lengths are planning references, not a committed build feature.</span></li><li class="gate"><span class="gate-dot"></span><span class="gate-label">SolidWorks CAD is deferred; the packet currently relies on drawings, briefs, and the design table.</span></li></ul></div>
+    <div class="status-val"><ul class="gates"><li class="gate"><span class="gate-dot"></span><span class="gate-label">No measured bar data yet; family-spec dimensions are first-order tuning predictions pending pilot validation.</span></li><li class="gate"><span class="gate-dot"></span><span class="gate-label">Resonators are deferred to v2; current lengths are planning references, not a committed build feature.</span></li><li class="gate"><span class="gate-dot"></span><span class="gate-label">SolidWorks CAD is deferred; the packet currently relies on the design table, reviewed measurement logs, and non-authority previews.</span></li></ul></div>
   </div>
 </article>
 
@@ -439,6 +439,8 @@ mark.hit{background:var(--gold);color:var(--ink);
 <section id="validation" data-toc="Validation Gates" data-toc-group="Validate">
   <h1><span class="eyebrow">· Validation Gates</span>Validation Gates</h1>
 <div class="file open"><div class="file-head" onclick="toggleFile(this)"><span class="icon">▶</span><span class="file-name">validation.csv</span><span class="file-type">CSV</span><span class="file-desc">Checks · methods · tolerances · gates</span><span class="file-actions"><a href="validation.csv" target="_blank" rel="noopener">Open</a></span></div><div class="file-body" data-csv="validation.csv"></div></div>
+<div class="file open"><div class="file-head" onclick="toggleFile(this)"><span class="icon">▶</span><span class="file-name">validation-loop.csv</span><span class="file-type">CSV</span><span class="file-desc">Pilot bar, resonator, frame, and authority gates</span><span class="file-actions"><a href="validation-loop.csv" target="_blank" rel="noopener">Open</a></span></div><div class="file-body" data-csv="validation-loop.csv"></div></div>
+<div class="file"><div class="file-head" onclick="toggleFile(this)"><span class="icon">▶</span><span class="file-name">visual-output-register.csv</span><span class="file-type">CSV</span><span class="file-desc">Visual and fabrication authority register</span><span class="file-actions"><a href="visual-output-register.csv" target="_blank" rel="noopener">Open</a></span></div><div class="file-body" data-csv="visual-output-register.csv"></div></div>
 </section>
 
 <section id="run-it" data-toc="Run It — Wolfram Cloud" data-toc-group="Validate">
