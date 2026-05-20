@@ -83,3 +83,22 @@ Before cutting bars from drawings, generate the per-bar SVGs from
 `xylophone-design-table.xlsx` / `family-spec.csv`, review the node-hole
 positions against the selected pilot-bar measurements, and update
 `visual-output-register.csv` so the drawing authority chain remains explicit.
+
+## Round 33C/D DXF Authority Note
+
+`drawings/per-bar-dxf-checklist.csv` is the release checklist for future
+per-bar DXF exports. A DXF file is not shop authority until its row is marked
+reviewed after:
+
+- the A5 pilot-bar V2/V3 measurement loop is recorded;
+- the SolidWorks master or equivalent CAD generator has exported dimensions
+  back to CSV;
+- the exported dimensions match `family-spec.csv` or a reviewed replacement
+  design table;
+- the DXF uses inch units and the required `FAB_GEOMETRY`, `DATUM`,
+  `DIMENSION`, and `NOTES` layers;
+- `visual-output-register.csv` records the released DXF/CAD artifact.
+
+Until those checks close, `drawings/template.svg`, any generated per-bar SVG,
+and any future DXF remain previews derived from first-order design-table data,
+not measured bar readiness.

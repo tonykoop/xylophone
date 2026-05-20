@@ -103,6 +103,7 @@ xylophone/
 ├── validation.csv                ← measured-tuning workflow (8 rows)
 ├── validation-loop.csv           ← Round 31 measurement-required gates
 ├── visual-output-register.csv    ← visual/CAD/design-table authority register
+├── drawings/per-bar-dxf-checklist.csv ← per-bar DXF release checklist
 ├── assembly-manual.md            ← 14-step shop manual
 ├── supplier-rfq.md               ← bar-stock RFQ template
 ├── drawing-brief.md              ← what the SVG drawings must show
@@ -118,7 +119,7 @@ xylophone/
 ├── xylophone-design-table.xlsx   ← parametric source of truth
 ├── images/                       ← hero, build photos
 ├── drawings/                     ← per-bar SVGs + frame elevation/plan
-├── cad/                          ← SolidWorks master (deferred)
+├── cad/                          ← SolidWorks master authority plan (master deferred)
 ├── cnc/                          ← cnc-plan.json + setup-sheet.md
 ├── jigs/                         ← jig sketches (deferred)
 └── site/                         ← static build-log site
@@ -136,6 +137,17 @@ xylophone/
   authority gates that must close before any L2 or shop-release claim.
 - Empirical/build gates remain deferred until pilot bars are cut, measured,
   tuned, mounted, and logged in `validation.csv`.
+
+## Round 33C/D CAD/DXF Authority Gate
+
+- `cad/solidworks-master-authority-plan.md` defines the future SolidWorks
+  master-layout and extracted-dimension CSV gate; it is not CAD authority by
+  itself.
+- `drawings/per-bar-dxf-checklist.csv` lists all 25 bars and the per-bar DXF
+  checks required before any DXF can become shop authority.
+- Per-bar DXF release remains blocked until pilot-bar V2/V3 measurements exist,
+  exported CAD dimensions match the reviewed table, and the released artifacts
+  are recorded in `visual-output-register.csv`.
 
 ## License
 
