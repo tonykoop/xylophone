@@ -1,0 +1,7 @@
+gate_id,artifact,authority_status,claim_allowed,claim_blocked,required_evidence,next_action
+XYL-T1-001,cad/XYL-001_MasterLayout.SLDPRT,pending_measurement,SolidWorks master is planned,No CAD geometry exists or is fabrication authority,Created SolidWorks file plus design-table import record,Build in SolidWorks after pilot-bar correction decision
+XYL-T1-002,cad/XYL-001_dimensions.csv,pending_measurement,Extracted dimension CSV is required,No extracted dimensions have been reviewed,Macro export compared to packet source tables,Run extraction only after master exists
+XYL-T1-003,drawings/per-bar-dxf-authority-register.csv,pending_measurement,Per-bar DXF release rows are named,No DXF coordinate or cut geometry exists,Every row receives a generated file hash and review result,Populate after CAD export and review
+XYL-T1-004,drawings/dxf/,pending_measurement,DXF output folder is a planned destination,No DXF files are present or released,Generated per-bar DXFs reviewed against extracted dimensions,Create folder only when files are generated
+XYL-T1-005,visual-output-register.csv,pending_measurement,Future CAD/DXF artifacts must be registered,Existing previews are not fabrication authority,Register rows for CAD source DXF outputs and derived previews,Update register when real outputs exist
+XYL-T1-006,validation.csv,measurement_required,Pilot-bar measurement is the next acoustic gate,No tuning frequency or measured partial is claimed by this lane,Measured pilot bar data with date tool and result,Measure before promoting any geometry
