@@ -1,0 +1,34 @@
+{
+  "product": "xylophone",
+  "pipeline": "studiopipeline:evolution-pipeline",
+  "stage": "0-intake",
+  "master_revision": "rev-A (pre-commit intake, 2026-07-01)",
+  "generated": "2026-07-01",
+  "cad_masters": [
+    {
+      "path": "cad/xylophone.scad",
+      "format": "openscad-source",
+      "sha256": "bffea1571ad04a29865a15cf72456fba2f012f93da7229aa9ad8fb3eb6ef3918",
+      "authority": "pending_measurement",
+      "lossy": false,
+      "notes": "Parametric bar-length schedule (25 bars) + trestle-frame envelope from family-spec.csv. Renders clean. Bar arch/tuning geometry and resonator tubes out of scope."
+    },
+    {
+      "path": "xylophone-design-table.xlsx",
+      "format": "design-table",
+      "sha256": "01b4556e8925f5cd1ec137b044a481305ed52c24df1608c4a3ef1d7126a91e23",
+      "authority": "fabrication",
+      "lossy": false,
+      "notes": "Current dimensional authority (25-bar family table, node-hole positions, resonator planning lengths)."
+    },
+    {
+      "path": "xylophone-starter.wl",
+      "format": "wolfram-source",
+      "sha256": "a0bad9b0827c0bca5327712d599cac8ca07a9157cf9e9a5e1cbbf667c0a7915f",
+      "authority": "derived_preview",
+      "lossy": false,
+      "notes": "Source-only (not executed); L2 evidence. Embedded live in explorer.html."
+    }
+  ],
+  "notes": "OpenSCAD source is a planning envelope; SolidWorks master remains deferred until pilot-bar V2 measurements exist (cad/README.md, cad/solidworks-master-authority-plan.md). Gate A (Alpha workspace compile) not yet run."
+}
