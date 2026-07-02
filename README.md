@@ -1,5 +1,11 @@
 # Xylophone
 
+**Status:** L2 V5 build-packet candidate. Full design table, BOM, sourcing,
+cut-list, and validation-loop gates exist for all 25 bars, but every bar
+length, node-hole position, and resonator length is `measurement_required`
+until a pilot bar is cut, tuned, mounted, and logged — see "Round 31 V5
+Build-Packet Gate" below.
+
 ![Xylophone hero — 25-bar chromatic in Padauk on a parametric trestle frame (placeholder)](images/xylophone-hero-placeholder.svg)
 
 A 25-bar chromatic xylophone, **C5 to C7**, in African Padauk on a
@@ -119,9 +125,11 @@ xylophone/
 ├── xylophone-design-table.xlsx   ← parametric source of truth
 ├── images/                       ← hero, build photos
 ├── drawings/                     ← per-bar SVGs + frame elevation/plan
-├── cad/                          ← SolidWorks master authority plan (master deferred)
+├── cad/                          ← SolidWorks master authority plan (master deferred);
+│                                    cad/xylophone.scad parametric bar-schedule + frame envelope
 ├── cnc/                          ← cnc-plan.json + setup-sheet.md
 ├── jigs/                         ← jig sketches (deferred)
+├── evolution/                    ← evolution-pipeline Stage 0 intake (Gate A not yet run)
 └── site/                         ← static build-log site
 ```
 
